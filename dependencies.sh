@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sudo apt-get update
+sudo apt-get install tcl
+sudo apt-get install tcl-dev
+sudo apt-get install check
+sudo apt-get install expect
+sudo apt-get install libxml2
+sudo apt-get install libxml2-dev
+sudo apt-get install byacc
+sudo apt-get install flex
+sudo apt-get install libreadlinr-dev
+sudo apt-get install libreadline-gplv2-dev
+sudo apt-get build-dep build-essential
+sudo apt-get install gcc
+sudo apt-get install g++
+cd peos-master
+make

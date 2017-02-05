@@ -4,7 +4,7 @@ The group project repository for team Matte
 ---
 ## Installation & Testing
 ### PEOS
-1. Clone the Matte_Group_Proj repository
+1. Clone the Matte_Group_Proj repository with : `git clone --recursive https://github.com/RobAntcliff/Matte_Group_Proj.git`
 1. In the root directory where dependencies.sh can be found run :
 `sh dependencies.sh ` This bash script will install all dependencies needed for PEOS, and will compile
 1. From the root directory run : `pml/check/pmlcheck compiler/models/eggs.pml` eggs.pml can be replaced with any pml file from the models folder

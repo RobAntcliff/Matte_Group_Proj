@@ -1,0 +1,3 @@
+[submodule "OWL/DINTO"]
+	path = OWL/DINTO
+	url = https://github.com/labda/DINTO

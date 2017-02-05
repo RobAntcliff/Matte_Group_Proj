@@ -1,4 +1,0 @@
-to launch protege, navigate to the Protege-5.1.0 through command line and type - "./run.sh"
-this will open the protege gui
-use File -> Open to select one of the DINTO .owl files
-protege will automatically report a large amount of metrics about the ontology on the right hand side of the opening page

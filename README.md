@@ -28,8 +28,8 @@ The group project repository for team Matte
 ####To Use
 1. Open your command line terminal, and navigate to the folder /OWL
 2. Run ./dependencies.sh in this folder to install the dependencies for loading Owl onthologies via the command line
-3. Once the installation is complete, navigate to  the folder containing your OWL onthology (for this project either /OWl/DINTO/DINTO 1 or /OWL/DINTO/DINTO1.2)
-4. Enter the command 'ontospy <onthology name>'
+3. Once the installation is complete, navigate to  the folder containing your OWL onthology (for this project either /OWL/DINTO/DINTO 1 or /OWL/DINTO/DINTO1.2)
+4. Enter the command 'ontospy "onthology name"'
 ####To Test
 1. Running './test_loadowl.sh' will run tests that will attempt to load and run through the class hierarchies of owl onthologies in the DINTO folder.
  ---

@@ -15,6 +15,11 @@ The group project repository for team Matte
 
 ---
 ## Features
+
+### Running the Application
+1. Once in the Matte_Group_Proj folder, run the command 'python3 DDI-App-UI.py'
+2. Follow the onscreen prompts
+
 ### PML File Selection
 
 1. In the File-Selector, run `python slector-ui.py`

@@ -14,7 +14,7 @@ def runCheck():
 		print("No PML file has been selected.\nPlease enter the \'select\' command.")
 	else:
 		try:
-			pml_check = 'Check/pmlcheck'
+			pml_check = 'DDI-App/Check/pmlcheck'
 			check_results = subprocess.check_output([pml_check, path])
 			#str(check_results, 'utf-8')
 		except subprocess.CalledProcessError as e:

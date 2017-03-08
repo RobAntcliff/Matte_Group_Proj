@@ -1,0 +1,11 @@
+compiler/models/martini.pml:56: action 'pour' provides but does not require '"martini"'
+compiler/models/martini.pml:6: "ice" in action 'add_ice' is unprovided
+compiler/models/martini.pml:7: "shaker" in action 'add_ice' is unprovided
+compiler/models/martini.pml:13: "vermouth" in action 'add_vermouth' is unprovided
+compiler/models/martini.pml:20: "gin" in action 'add_gin' is unprovided
+compiler/models/martini.pml:36: "olive" in action 'wash_olive' is unprovided
+compiler/models/martini.pml:43: "martini-glass" in action 'skewer_olive' is unprovided
+compiler/models/martini.pml:44: "toothpick" in action 'skewer_olive' is unprovided
+compiler/models/martini.pml:55: "pitcher" in action 'pour' is unprovided
+compiler/models/martini.pml:28: "shaker" in action 'shake' is not consumed
+compiler/models/martini.pml:56: "martini" in action 'pour' is not consumed

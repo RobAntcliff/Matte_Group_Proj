@@ -14,5 +14,10 @@ sudo apt-get install libreadline-gplv2-dev
 sudo apt-get build-dep build-essential
 sudo apt-get install gcc
 sudo apt-get install g++
+
+sudo apt-get install libncurses5-dev
+sudo apt-get install python-pip
+sudo pip install ontospy
+
 cd peos-master
 make

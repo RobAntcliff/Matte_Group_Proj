@@ -2,7 +2,7 @@ import ontospy
 import datetime
 import rdflib
 
-logfile = open("loadDINTOLog.log","w+")
+logfile = open("loadDINTO.log","w+")
 
 def getTime():
 	now = datetime.datetime.now()
@@ -12,8 +12,10 @@ def getTime():
 def getClasses(owl):
 	model = ontospy.Ontospy(owl)
 	classList = model.classes
-	now = datetime.datetime.now()
-	output = ("%s :: Classes loaded from model at %s \n" %(getTime(),owl))
+	if classList != []:
+		output = ("%s :: Classes loaded from model at %s \n" %(getTime(),owl))
+	else:
+		output = ("%s :: Error - Classes not loaded from %s. Invalid owl file \n" %(getTime(),owl))
 	logfile.write(output)
 	return classList
 
@@ -39,8 +41,10 @@ def printDetails(currentClass):
 				output[6] = output[6] + unicode(x[2])	
 		else:
 			output[7] = output[7] + unicode(x[2])	
+	print "\n"
 	for triple in output:
 		print triple
+	print "\n"
 
 def findClass(className,classList):
 	length = len(classList)
@@ -66,23 +70,39 @@ def findClass(className,classList):
 		logfile.write(output)
 
 def main():
-	modelName = raw_input("Which owl onthology would you like to view:\n1. OAE_DINTO1.2_subset.owl\n")
-	if modelName == "OAE_DINTO_subset.owl" or modelName == "1":
-		modelName = "DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
+	models = {"OAE_DINTO_subset.owl": "DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
+			 }
+	choice = raw_input("Select the owl onthology would you like to view, or enter quit to exit the application:\nOAE_DINTO_subset.owl\n\n")
+	if choice in models:
+		modelName = models[choice]	
 		output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
 		logfile.write(output)
 		classList = getClasses(modelName)
-		quit = False
-		while quit == False:
-			className = raw_input("Choose a class or enter quit to exit the application:")
-			if className == "quit":
-				quit = True
-			else:	
-				output = ("%s :: User selected finding class %s \n" %(getTime(),className))
-				logfile.write(output)
-				findClass(className,classList)
+		if classList != []:
+			quit = False
+			while quit == False:
+				className = raw_input("Choose a class or enter quit to exit the application:")
+				if className == "quit":
+					quit = True
+				else:	
+					output = ("%s :: User selected finding class %s \n" %(getTime(),className))
+					logfile.write(output)
+					findClass(className,classList)
+			output = ("%s :: Exiting application \n" %(getTime()))
+			logfile.write(output)
+			logfile.close()
+		else:
+			print "----------"
+			print "\nCannot read that owl file. Please try again\n"
+			main()
+	elif choice != "quit":
+		print "That is not a approved owl onthology. Please try again"
+		main()
+	else:
 		output = ("%s :: Exiting application \n" %(getTime()))
 		logfile.write(output)
 		logfile.close()
-	else:
-		print "That is not a valid owl onthology"
+		return
+
+if __name__ == '__main__':
+   main()

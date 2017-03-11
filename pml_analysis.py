@@ -2,6 +2,7 @@ import lxml
 import re # regexy 
 import sys
 import itertools
+from drugdict import *  
 
 lextokens = iter([])
 
@@ -10,7 +11,6 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'script[ \n\t{]'          , "SCRIPT")
             , (r'branch[ \n\t{]'          , "BRANCH")
             , (r'agent'                   , "AGENT")
-            , (r'select(ion)?[ \n\t{]'    , "SELECTION")
             , (r'iteration[ \n\t{]'       , "ITERATION")
             , (r'action[ \n\t{]'          , "ACTION")
             , (r'manual'                  , "MANUAL")

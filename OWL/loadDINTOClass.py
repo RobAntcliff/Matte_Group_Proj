@@ -2,7 +2,7 @@ import ontospy
 import datetime
 import rdflib
 
-logfile = open("loadDINTOLog.txt","w+")
+logfile = open("loadDINTOLog.log","w+")
 
 def getTime():
 	now = datetime.datetime.now()
@@ -65,23 +65,24 @@ def findClass(className,classList):
 		print "Sorry, could not find a class by that name"
 		logfile.write(output)
 
-modelName = raw_input("Which owl onthology would you like to view:\n1. OAE_DINTO1.2_subset.owl\n")
-if modelName == "OAE_DINTO_subset.owl" or modelName == "1":
-	modelName = "DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
-	output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
-	logfile.write(output)
-	classList = getClasses(modelName)
-	quit = False
-	while quit == False:
-		className = raw_input("Choose a class or enter quit to exit the application:")
-		if className == "quit":
-			quit = True
-		else:	
-			output = ("%s :: User selected finding class %s \n" %(getTime(),className))
-			logfile.write(output)
-			findClass(className,classList)
-	output = ("%s :: Exiting application \n" %(getTime()))
-	logfile.write(output)
-	logfile.close()
-else:
-	print "That is not a valid owl onthology"
+def main():
+	modelName = raw_input("Which owl onthology would you like to view:\n1. OAE_DINTO1.2_subset.owl\n")
+	if modelName == "OAE_DINTO_subset.owl" or modelName == "1":
+		modelName = "DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
+		output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
+		logfile.write(output)
+		classList = getClasses(modelName)
+		quit = False
+		while quit == False:
+			className = raw_input("Choose a class or enter quit to exit the application:")
+			if className == "quit":
+				quit = True
+			else:	
+				output = ("%s :: User selected finding class %s \n" %(getTime(),className))
+				logfile.write(output)
+				findClass(className,classList)
+		output = ("%s :: Exiting application \n" %(getTime()))
+		logfile.write(output)
+		logfile.close()
+	else:
+		print "That is not a valid owl onthology"

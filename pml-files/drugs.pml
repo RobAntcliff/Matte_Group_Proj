@@ -3,14 +3,21 @@ process testing {
       script { "take drugs" }
       agent { "sick person" }
       tool { "drugs" }
-      requires { "Panadol" }
+      requires { "capecitabine" }
       provides { "remedy" }
     }
     action test2 {
-      script { "take drugs" }
+      script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }
-      requires { "Disprin" }  
+      requires { "sleep" }  
+      provides { "remedy" }
+    }
+    action test3 {
+      script { "no drugs just rest" }
+      agent { "sick person" }
+      tool { "drugs" }
+      requires { "bupropion" }  
       provides { "remedy" }
     }
 }

@@ -4,6 +4,11 @@ import sys
 import itertools
 from drugdict import *  
 
+#python pml_analysis.py pml-files/drugs.pml   		 -> returns drugs
+#python pml_analysis.py pml-files/nodrugs.pml 		 -> returns nothing as no drugs
+#python pml_analysis.py pml-files/error.pml_analysis -> finds error and returns it
+
+
 lextokens = iter([])
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
@@ -29,6 +34,8 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'/\*((?!(\*/)).)*\*/'     , None)
             , (r'[ \n\t]+'                , None)
             )
+
+tempList = []
 
 def parse(data):
     global lextokens
@@ -156,6 +163,8 @@ def compExpr():
 def valueEx():
     attrCheck = lookahead("NUM") or lookahead("STRING")
     if attrCheck:
+        attrCheck = attrCheck[1:-1]
+        tempList.append(attrCheck)
         return {"attr": attrCheck}
     idt = lookahead("ID")
     if idt:
@@ -183,13 +192,21 @@ def utilFuncLi(par):
         items.append(par())
     return items
 
+def findDrugs(list):
+    drugList = []
+    for i in list: 
+        if i in drugDict.keys():
+            drugList.append(i)
+    return drugList
+
 class ReturnExcept(Exception):pass
 
 def main():
     f = open(sys.argv[1],"r")
     contents = f.read()
     parsed = parse(contents)
-    print parsed
+    drugs = findDrugs(tempList)
+    print drugs
 
 if __name__ == "__main__":
     main()

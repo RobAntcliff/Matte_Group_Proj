@@ -174,7 +174,6 @@ def valueEx():
         return t
     error_with_message("Expr")
 
-
 def parseEx():
     a =[compExpr()]
     ch_op = lookahead("CONJUCT")
@@ -207,6 +206,10 @@ def main():
     parsed = parse(contents)
     drugs = findDrugs(tempList)
     print drugs
+    ## uncomment lines below to 
+    ## to print parsed file
+    #parsed = parse(contents)
+    #print parsed
 
 if __name__ == "__main__":
     main()

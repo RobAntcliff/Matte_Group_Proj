@@ -5,7 +5,7 @@ import itertools
 from drugdict import *  
 
 #python pml_analysis.py pml-files/drugs.pml   		 -> returns drugs
-#python pml_analysis.py pml-files/nodrugs.pml 		 -> returns nothing as no drugs
+#python pml_analysis.py pml-files/nodrugs.pml 		 -> returns empty list as no drugs
 #python pml_analysis.py pml-files/error.pml_analysis -> finds error and returns it
 
 

@@ -4,27 +4,29 @@ import time
 commands = {}
 running = True
 path = " "
+timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
 def loadPMLFile():
 	global path
-	path = input("Please enter absolute path to the PML file:\n")
+	path = input("Choose an option or enter absolute path to the PML file:\n 1: DDI-App/Lab_Assessment.pml \n")
 
 def runCheck():
 	global path
 	if path == " ":
 		print("No PML file has been selected.\nPlease enter the \'select\' command.")
 	else:
-		try:
-			timestr = time.strftime("%Y%m%d-%H%M%S")
-			with open('DDI-App/log_folder/test' + timestr + '.log', 'w') as f:
+		with open('DDI-App/log_folder/test' + timestr + '.log', 'w') as f:
+			if path == "1":
+				path = "DDI-App/Lab_Assessment.pml"
+			try:
 				pml_check = 'DDI-App/Check/pmlcheck'
 				check_results = subprocess.check_output([pml_check, path])
-				check_results_str = check_results.decode("utf-8")
-				f.write(check_results_str)
 				#str(check_results, 'utf-8')
-		except subprocess.CalledProcessError as e:
-			check_results = "The following errors were found in the selected PML file:" + e.output
-		print(check_results)
+			except subprocess.CalledProcessError as e:
+				check_results = "The following errors were found in the selected PML file:" + e.output.decode("utf-8")
+			check_results_str = check_results.decode("utf-8")
+			f.write(check_results_str)
+			#print(check_results_str)
 
 def exitApplication():
 	global running

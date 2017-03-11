@@ -395,6 +395,7 @@ static void CheckConsumers (tree, node, graph)
       }
   
       PrintConsumerWarning(tree, node, blocked);
+      printf("here2?");
     }
     
     /* Destroy any allocated data structures. */
@@ -498,20 +499,34 @@ static void PrintConsumerWarning (tree, node, blocked)
      Node node;
      int  blocked;
 {
+  FILE *f = fopen("logfile.txt", "w");
   if(node -> type == PROCESS)
     printf("%s:%d: ", link_filename, GetLineNumber(tree));
+    fprintf(f, "%s:%d: ", link_filename, GetLineNumber(tree));
+    printf("Boop1");
   else    
     printf("%s:%d: ", filename, GetLineNumber(tree));
+    fprintf(f, "%s:%d: ", filename, GetLineNumber(tree));
+    printf("Boop2");
 
   if(STATUS (node) == PARTIALLY_SPECIFIED && HasAttribute(tree))
     printf("attribute %s of ", GetAttributeName(tree));
+    fprintf(f, "attribute %s of ", GetAttributeName(tree));
+    printf("Boop3");
 
   printf("%s in action '%s' is ", GetResourceName(tree), node -> name);
+  fprintf(f, "%s in action '%s' is ", GetResourceName(tree), node -> name);
+  printf("Boop4");
     
   if(STATUS (node) != CONTRADICTION)
     printf("%s\n", consumer_warnings[AVAIL (node)][blocked]);
+    fprintf(f, "%s\n", consumer_warnings[AVAIL (node)][blocked]);
+    printf("Boop5");
   else
     printf("%s\n", contradiction_warnings[AVAIL (node)][blocked]);
+    fprintf(f, "%s\n", contradiction_warnings[AVAIL (node)][blocked]);
+    printf("Boop6");
+  fclose(f);
 }
 
 
@@ -591,7 +606,8 @@ static void CheckProducers (tree, node, graph)
 	STATUS (node) = r_stable [STATUS (root)] [STATUS (node)];
       }
 
-      PrintProducerWarning(tree, node, blocked);  
+      PrintProducerWarning(tree, node, blocked);
+      printf("Please?");  
     }
 	
     /* Destroy any allocated data structures. */
@@ -695,17 +711,29 @@ static void PrintProducerWarning (tree, node, blocked)
      Node node;
      int  blocked;
 {
+  FILE *f = fopen("logfile.txt", "w");
   printf("%s:%d: ", filename, GetLineNumber(tree));
+  fprintf(f, "%s:%d: ", filename, GetLineNumber(tree));
+  printf("Beep1");
 
   if(STATUS (node) == PARTIALLY_SPECIFIED && HasAttribute(tree))
     printf("attribute %s of ", GetAttributeName(tree));
+    fprintf(f, "attribute %s of ", GetAttributeName(tree));
+    printf("Beep2");
 
   printf("%s in action '%s' is ", GetResourceName(tree), node -> name);
+  fprintf(f, "%s in action '%s' is ", GetResourceName(tree), node -> name);
+  printf("Beep3");
   
   if(STATUS (node) != CONTRADICTION)
     printf("%s\n", producer_warnings[AVAIL (node)][blocked]);
+    fprintf(f, "%s\n", producer_warnings[AVAIL (node)][blocked]);
+    printf("Beep4");
   else
     printf("%s\n", contradiction_warnings[AVAIL (node)][blocked]);
+    fprintf(f, "%s\n", contradiction_warnings[AVAIL (node)][blocked]);
+    printf("Beep5");
+  fclose(f);
 }
 
 
@@ -792,6 +820,7 @@ static void CheckExpressions (tree, node, graph)
       }	
       
       PrintExpressionWarning(tree, node, c_status);
+      printf("Here?");
     }
     
     ListDestroy (concurrent);
@@ -940,14 +969,25 @@ static void PrintExpressionWarning (tree, node, blocked)
      Node node;
      int  blocked;
 {
+  FILE *f = fopen("logfile.txt", "w");
   printf("%s:%d: ", filename, GetLineNumber(tree));
+  fprintf(f, "%s:%d: ", filename, GetLineNumber(tree));
+  printf("C'mon1");
 
   printf("%s in action '%s' is ", GetExpression(tree), node -> name);
+  fprintf(f, "%s in action '%s' is ", GetExpression(tree), node -> name);
+  printf("C'mon2");
 
   if(STATUS (node) == SOMETIMES)
     printf("%s\n", expression_warnings_sometimes[AVAIL (node)][blocked]); 
+    fprintf(f, "%s\n", expression_warnings_sometimes[AVAIL (node)][blocked]);
+    printf("C'mon3"); 
   else
     printf("%s\n", expression_warnings_never[AVAIL (node)][blocked]);
+    fprintf(f, "%s\n", expression_warnings_never[AVAIL (node)][blocked]);
+    printf("C'mon4");
+
+  fclose(f);
 }
 
 

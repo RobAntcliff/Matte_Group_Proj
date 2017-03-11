@@ -1,0 +1,6 @@
+DDI-App/Lab_Assessment.pml:4: action 'PresentToSpecialistLab' provides but does not require 'test_plan'
+DDI-App/Lab_Assessment.pml:8: action 'PrepareTests' provides but does not require 'test_suite'
+DDI-App/Lab_Assessment.pml:3: symptoms in action 'PresentToSpecialistLab' is unprovided
+DDI-App/Lab_Assessment.pml:11: examination_results in action 'RunTests' is unprovided
+DDI-App/Lab_Assessment.pml:12: diagnosis in action 'RunTests' is unprovided
+DDI-App/Lab_Assessment.pml:13: diagnosis in action 'RunTests' is not consumed

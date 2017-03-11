@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 commands = {}
 running = True
@@ -14,9 +15,13 @@ def runCheck():
 		print("No PML file has been selected.\nPlease enter the \'select\' command.")
 	else:
 		try:
-			pml_check = 'DDI-App/Check/pmlcheck'
-			check_results = subprocess.check_output([pml_check, path])
-			#str(check_results, 'utf-8')
+			timestr = time.strftime("%Y%m%d-%H%M%S")
+			with open('DDI-App/log_folder/test' + timestr + '.log', 'w') as f:
+				pml_check = 'DDI-App/Check/pmlcheck'
+				check_results = subprocess.check_output([pml_check, path])
+				check_results_str = check_results.decode("utf-8")
+				f.write(check_results_str)
+				#str(check_results, 'utf-8')
 		except subprocess.CalledProcessError as e:
 			check_results = "The following errors were found in the selected PML file:" + e.output
 		print(check_results)

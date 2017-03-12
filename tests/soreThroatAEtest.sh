@@ -4,7 +4,9 @@ cd ..
 python3 DDI-App-UI.py <<!
 load OWL
 OAE_DINTO_subset.owl
-
+sore throat AE
+quit
+quit
 !
 
 echo  "

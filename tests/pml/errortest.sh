@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ..
+cd ..
 python3 DDI-App-UI.py <<!
 load PML
 3

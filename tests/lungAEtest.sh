@@ -3,10 +3,8 @@
 cd ..
 python3 DDI-App-UI.py <<!
 load OWL
-OAE_DINTO_subset.owl
-lung AE
-quit
-quit
+OWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl
+
 !
 
 echo  "

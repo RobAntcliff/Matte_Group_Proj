@@ -1,0 +1,6 @@
+pmlfiles/nodrugs.pml:7: action 'test' provides but does not require '"remedy"'
+pmlfiles/nodrugs.pml:14: action 'test2' provides but does not require '"remedy"'
+pmlfiles/nodrugs.pml:6: "drip" in action 'test' is unprovided
+pmlfiles/nodrugs.pml:13: "sleep" in action 'test2' is unprovided
+pmlfiles/nodrugs.pml:7: "remedy" in action 'test' is not consumed
+pmlfiles/nodrugs.pml:14: "remedy" in action 'test2' is not consumed

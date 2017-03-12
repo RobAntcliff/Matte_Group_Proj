@@ -1,12 +1,13 @@
 #!/bin/bash
 
 cd ..
+cd ..
 python3 DDI-App-UI.py <<!
 load PML
-2
+1
 check PML
 quit
 !
 
 echo "
-Test on drugs.pml with Check ran. See logfiles."
+Test on Lab Assessment.pml with Check ran. See logfiles."

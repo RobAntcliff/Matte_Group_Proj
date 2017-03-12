@@ -19,6 +19,11 @@ The group project repository for team Matte
 2. By following the on screen instructions, you can select a PML file to load into the application and run check on it
 3. The PML file check will generate a log file of the analysed PML file. If there is a syntaxical error, that will be reported on screen for immediate notice
 4. Loading OWL file will allow you to search the ontology for a class. We recommend searching for `lung AE` or `sore throat AE` 
+5. 
+
+### Testing
+1. To test the PML file loading and checking, nagivate to the tests folder in the directory, and go to the pml folder there. Running `./labassessmenttest.sh`, `./drugstest.sh` or `./nodrugstest.sh` will test the application with the corresponding PML file and output their log file. Running `./errortest.sh` will show us in it's log the case of incorrect syntax in a PML file
+
 
  ---
 

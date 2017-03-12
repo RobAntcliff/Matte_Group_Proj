@@ -35,7 +35,7 @@ def runCheck():
 				check_results_str = check_results.decode("utf-8")
 				#str(check_results, 'utf-8')
 			except subprocess.CalledProcessError as e:
-				check_results_str = "The following errors were found in the selected PML file:" + e.output.decode("utf-8")
+				check_results_str = "The following errors were found in the selected PML file: Invalid Syntax"
 			f.write(check_results_str)
 			#print(check_results_str)
 

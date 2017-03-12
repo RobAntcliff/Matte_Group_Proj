@@ -72,7 +72,7 @@ def findClass(className,classList):
 
 def main():
 	choice = raw_input("Please enter the path to the owl onthology would you like to view, or enter quit to exit the application.\nThe following owl files are the ones known to work:\nOWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl\n\n")
-	if choice != "":
+	if choice != "" and choice != "quit":
 		modelName = choice
 		output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
 		logfile.write(output)

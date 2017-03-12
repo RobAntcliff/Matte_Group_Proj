@@ -1,10 +1,15 @@
 import subprocess
 import time
+from pml_analysis import *
 
 commands = {}
 running = True
 path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
+
+def findDrugs():
+	f = open('pmlfiles/drugs.pml', 'r')
+	run(f)
 
 def loadPMLFile():
 	global path
@@ -27,6 +32,7 @@ def runCheck():
 			check_results_str = check_results.decode("utf-8")
 			f.write(check_results_str)
 			#print(check_results_str)
+
 def loadOwl():
 	loadDinto = 'DDI-App/loadDINTOClass.py'
 	subprocess.call(['python',loadDinto])
@@ -36,13 +42,15 @@ def exitApplication():
 	running = False
 
 def printHelp():
-	print("help:      Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload Owl: Load an owl onthology and search it for a class\nexit:      Close the application")
+	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload Owl: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nexit: Close the application")
 
 commands = {"help"      : printHelp,
             "check PML" : runCheck,
             "load Owl"	: loadOwl,
             "exit"      : exitApplication,
-	    "load PML"  : loadPMLFile,}
+	    	"load PML"  : loadPMLFile,
+	    	"find drugs": findDrugs
+	    	}
 print("Application started, see available commands below:")
 printHelp()
 while running:

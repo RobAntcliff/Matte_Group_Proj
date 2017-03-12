@@ -1,8 +1,9 @@
 import ontospy
 import datetime
 import rdflib
+import os 
 
-logfile = open("loadDINTO.log","w+")
+logfile = open("DDI-App/log_folder/loadDINTO.log","w+")
 
 def getTime():
 	now = datetime.datetime.now()
@@ -41,10 +42,10 @@ def printDetails(currentClass):
 				output[6] = output[6] + unicode(x[2])	
 		else:
 			output[7] = output[7] + unicode(x[2])	
-	print "\n"
+	print ("\n")
 	for triple in output:
-		print triple
-	print "\n"
+		print (triple)
+	print ("\n")
 
 def findClass(className,classList):
 	length = len(classList)
@@ -66,11 +67,13 @@ def findClass(className,classList):
 		i = i + 1
 	if found == False:
 		output = ("%s :: Did not find class %s \n" %(getTime(), className))
-		print "Sorry, could not find a class by that name"
+		print ("Sorry, could not find a class by that name")
 		logfile.write(output)
 
 def main():
-	models = {"OAE_DINTO_subset.owl": "DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
+	dir_path = os.path.dirname(os.path.realpath(__file__))
+	dir_path = dir_path[:-8]
+	models = {"OAE_DINTO_subset.owl": dir_path + "/OWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
 			 }
 	choice = raw_input("Select the owl onthology would you like to view, or enter quit to exit the application:\nOAE_DINTO_subset.owl\n\n")
 	if choice in models:
@@ -92,11 +95,11 @@ def main():
 			logfile.write(output)
 			logfile.close()
 		else:
-			print "----------"
-			print "\nCannot read that owl file. Please try again\n"
+			print ("----------")
+			print ("\nCannot read that owl file. Please try again\n")
 			main()
 	elif choice != "quit":
-		print "That is not a approved owl onthology. Please try again"
+		print ("That is not a approved owl onthology. Please try again")
 		main()
 	else:
 		output = ("%s :: Exiting application \n" %(getTime()))

@@ -2,12 +2,11 @@ import lxml
 import re # regexy 
 import sys
 import itertools
-from drugdict import *  
+from pmlfiles.drugdict import drugDict
 
-#python pml_analysis.py pml-files/drugs.pml   		 -> returns drugs
-#python pml_analysis.py pml-files/nodrugs.pml 		 -> returns empty list as no drugs
-#python pml_analysis.py pml-files/error.pml_analysis -> finds error and returns it
-
+#python pml_analysis.py pmlfiles/drugs.pml           -> returns list of drugs
+#python pml_analysis.py pmlfiles/nodrugs.pml         -> outputs 'No drugs in PML file' to terminal 
+#python pml_analysis.py pmlfiles/error.pml_analysis  -> finds error and returns it
 
 lextokens = iter([])
 
@@ -198,14 +197,23 @@ def findDrugs(list):
             drugList.append(i)
     return drugList
 
+def containsDrugs(list):
+    if not list:
+        return False
+    else:
+        return True
+
 class ReturnExcept(Exception):pass
 
 def main():
     f = open(sys.argv[1],"r")
     contents = f.read()
     parsed = parse(contents)
-    drugs = findDrugs(tempList)
-    print drugs
+    drugsLi = findDrugs(tempList)
+    if containsDrugs(drugsLi):
+        print drugsLi
+    else: 
+        print 'No drugs in PML file'
     ## uncomment lines below to 
     ## to print parsed file
     #parsed = parse(contents)

@@ -61,7 +61,7 @@ def lexer(data, exprs):
 def findDrugs(list):
     drugList = []
     for i in list: 
-        if i in drugDict.keys():
+        if i in drugDict.keys() and i not in drugList:
             drugList.append(i)
     return drugList
 
@@ -207,6 +207,7 @@ def containsDrugs(list):
 def output(list):
     if containsDrugs(list):
         print(list)
+        del tempList[:]
     else:
         print('No drugs in PML file')
 

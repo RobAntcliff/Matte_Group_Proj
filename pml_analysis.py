@@ -87,7 +87,7 @@ def lookahead(tag):
 def lookahead_f(tag):
     (dat, t) = nextTok()
     if tag != t:
-        raise ReturnExcept('Expect %s, not "%s"\n' % (tag,dat))
+        raise ReturnExcept('Expecting "%s", but received "%s"\n' % (tag,dat))
     return dat
 
 def error_with_message(curr_location):
@@ -204,21 +204,20 @@ def containsDrugs(list):
     else:
         return True
 
+def output(list):
+    if containsDrugs(list):
+        print(list)
+    else:
+        print('No drugs in PML file')
+
 class ReturnExcept(Exception):pass
 
-def main():
-    f = open(sys.argv[1],"r")
+def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
-    if containsDrugs(drugsLi):
-        print drugsLi
-    else: 
-        print 'No drugs in PML file'
+    output(drugsLi)
     ## uncomment lines below to 
     ## to print parsed file
     #parsed = parse(contents)
     #print parsed
-
-if __name__ == "__main__":
-    main()

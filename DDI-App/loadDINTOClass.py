@@ -71,9 +71,7 @@ def findClass(className,classList):
 		logfile.write(output)
 
 def main():
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	dir_path = dir_path[:-8]
-	models = {"OAE_DINTO_subset.owl": dir_path + "/OWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
+	models = {"OAE_DINTO_subset.owl": "./OWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl"
 			 }
 	choice = raw_input("Select the owl onthology would you like to view, or enter quit to exit the application:\nOAE_DINTO_subset.owl\n\n")
 	if choice in models:

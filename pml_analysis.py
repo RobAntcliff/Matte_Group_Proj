@@ -35,6 +35,7 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             )
 
 tempList = []
+sys.tracebacklimit = 0
 
 def parse(data):
     global lextokens
@@ -56,6 +57,13 @@ def lexer(data, exprs):
                 break
         else:
             raise ReturnExcept('Error char -> "%s"\n' % data[head]) #nomatch
+
+def findDrugs(list):
+    drugList = []
+    for i in list: 
+        if i in drugDict.keys():
+            drugList.append(i)
+    return drugList
 
 def addToken(value):
     global lextokens
@@ -189,13 +197,6 @@ def utilFuncLi(par):
     while not lookahead("RIGHTBRACKET"):
         items.append(par())
     return items
-
-def findDrugs(list):
-    drugList = []
-    for i in list: 
-        if i in drugDict.keys():
-            drugList.append(i)
-    return drugList
 
 def containsDrugs(list):
     if not list:

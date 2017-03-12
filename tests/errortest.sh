@@ -9,4 +9,5 @@ quit
 !
 
 echo "
-Test on error.pml with Check ran. See logfiles."
+Test on error.pml with Check ran. 
+This test should throw an error, as the pml syntax is incorrect. See logfiles."

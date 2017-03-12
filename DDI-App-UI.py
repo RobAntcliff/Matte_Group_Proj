@@ -8,8 +8,13 @@ path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
 def findDrugs():
-	f = open('pmlfiles/drugs.pml', 'r')
-	run(f)
+	usr_input = input("Enter 1 for file with drugs, Enter 2 for file without drugs: ")
+	if usr_input == "1":
+		f = open('pmlfiles/drugs.pml', 'r')
+		run(f)
+	elif usr_input == "2":
+		fn = open('pmlfiles/nodrugs.pml', 'r')
+		run(fn)
 
 def loadPMLFile():
 	global path

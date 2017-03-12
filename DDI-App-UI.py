@@ -15,6 +15,8 @@ def findDrugs():
 	elif usr_input == "2":
 		fn = open('pmlfiles/nodrugs.pml', 'r')
 		run(fn)
+	else:
+		findDrugs()
 
 def loadPMLFile():
 	global path

@@ -58,7 +58,7 @@ def lexer(data, exprs):
                 head=check.end(0)
                 break
         else:
-            raise ReturnExcept('Error char -> "%s"\n' % data[head]) 
+            raise ErrorReport('Error char -> "%s"\n' % data[head]) 
 
 def findDrugs(list):
     drugList = []
@@ -75,7 +75,7 @@ def nextTok():
     try:
         next_tok = next(lextokens)
     except StopIteration:
-        raise ReturnExcept('file end error') 
+        raise ErrorReport('file end error') 
     return next_tok
 
 def lookahead(tag):
@@ -94,7 +94,7 @@ def lookahead_f(tag, const_name):
 
 def error_with_message(curr_location):
     (dat, t) = nextTok()
-    raise ReturnExcept('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
+    raise ErrorReport('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
     lookahead_f("PROCESS", "Process")

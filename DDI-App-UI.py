@@ -7,6 +7,23 @@ running = True
 path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
+def runParse():
+	usr_input = input("Enter 1, 2 or 3 to run on a particular file: ")
+	if usr_input == "1":
+		f = open('pmlfiles/drugs.pml', 'r')
+		runParser(f)
+	elif usr_input == "2":
+		fn = open('pmlfiles/branch.pml', 'r')
+		runParser(fn)
+	elif usr_input == "3":
+		frp = open('pmlfiles/run_peos.pml', 'r')
+		runParser(frp)
+	elif usr_input == "4":
+		fnn = open('pmlfiles/noname.pml', 'r')
+		runParser(fnn)
+	else:
+		runParse()
+
 def findDrugs():
 	usr_input = input("Enter 1 for file with drugs, Enter 2 for file without drugs: ")
 	if usr_input == "1":
@@ -55,14 +72,15 @@ def exitApplication():
 	running = False
 
 def printHelp():
-	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload OWL: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nquit: Close the application")
+	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload OWL: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nrun parse: Scan the file for errors\nquit: Close the application")
 
 commands = {"help"      : printHelp,
             "check PML" : runCheck,
             "load OWL"	: loadOwl,
             "quit"      : exitApplication,
 	    	"load PML"  : loadPMLFile,
-	    	"find drugs": findDrugs
+	    	"find drugs": findDrugs,
+	    	"run parse" : runParse
 	    	}
 print("Application started, see available commands below:")
 printHelp()

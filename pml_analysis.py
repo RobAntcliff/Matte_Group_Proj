@@ -37,7 +37,7 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             )
 
 tempList = []
-sys.tracebacklimit = 0
+sys.tracebacklimit = None
 
 def parse(data):
     global lextokens
@@ -89,7 +89,8 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        raise ErrorReport('Expecting %s %s, but received "%s"\n' % (const_name,tag,dat))
+        print('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
+        return -1
     return dat
 
 def error_with_message(curr_location):
@@ -97,8 +98,12 @@ def error_with_message(curr_location):
     raise ErrorReport('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
-    lookahead_f("PROCESS", "Process")
+    check = lookahead_f("PROCESS", "Process")
+    if check == -1:
+        return -1
     idt = lookahead_f("ID","Process")
+    if idt == -1:
+        return -1
     ps = utilFuncLi(getPrimitive)
     r = { "actions": ps, "name": idt }
     return r
@@ -226,4 +231,5 @@ def run(f):
 def runParser(f):
     ct = f.read()
     parsed = parse(ct)
-    print(parsed)
+    #print(parsed)
+    print("No errors found")

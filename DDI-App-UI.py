@@ -8,19 +8,13 @@ path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
 def runParse():
-	usr_input = input("Enter 1, 2 or 3 to run on a particular file: ")
+	usr_input = input("Enter 1 or 2 to run on a particular file: ")
 	if usr_input == "1":
 		f = open('pmlfiles/drugs.pml', 'r')
 		runParser(f)
 	elif usr_input == "2":
-		fn = open('pmlfiles/branch.pml', 'r')
+		fn= open('pmlfiles/noname2.pml', 'r')
 		runParser(fn)
-	elif usr_input == "3":
-		frp = open('pmlfiles/run_peos.pml', 'r')
-		runParser(frp)
-	elif usr_input == "4":
-		fnn = open('pmlfiles/noname.pml', 'r')
-		runParser(fnn)
 	else:
 		runParse()
 

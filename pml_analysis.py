@@ -12,6 +12,8 @@ lextokens = iter([])
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
             , (r'sequence[ \n\t{]'        , "SEQUENCE")
+            , (r'task[ \n\t{]'            , "TASK")
+            , (r'selection?[ \n\t{]'      , "SELECTION")
             , (r'script[ \n\t{]'          , "SCRIPT")
             , (r'branch[ \n\t{]'          , "BRANCH")
             , (r'agent'                   , "AGENT")
@@ -47,7 +49,7 @@ def lexer(data, exprs):
     head =0
     while head < len(data):
         for (syms, t) in exprs:
-            regex = re.compile(syms,flags = re.DOTALL|re.MULTILINE)
+            regex = re.compile(syms)
             check = regex.match(data, head)
             if check:
                 dat =check.group(0)
@@ -56,7 +58,7 @@ def lexer(data, exprs):
                 head=check.end(0)
                 break
         else:
-            raise ReturnExcept('Error char -> "%s"\n' % data[head]) #nomatch
+            raise ReturnExcept('Error char -> "%s"\n' % data[head]) 
 
 def findDrugs(list):
     drugList = []
@@ -84,10 +86,10 @@ def lookahead(tag):
         addToken((dat, t))
         return False
 
-def lookahead_f(tag):
+def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        raise ReturnExcept('Expecting "%s", but received "%s"\n' % (tag,dat))
+        raise ErrorReport('Expecting %s %s, but received "%s"\n' % (const_name,tag,dat))
     return dat
 
 def error_with_message(curr_location):
@@ -95,8 +97,8 @@ def error_with_message(curr_location):
     raise ReturnExcept('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
-    lookahead_f("PROCESS")
-    idt = lookahead_f("ID")
+    lookahead_f("PROCESS", "Process")
+    idt = lookahead_f("ID","Process")
     ps = utilFuncLi(getPrimitive)
     r = { "actions": ps, "name": idt }
     return r
@@ -112,19 +114,21 @@ def getPrimitive():
         return flow("iteration")
     elif lookahead("BRANCH"):
         return flow("branch")
+    elif lookahead("TASK"):
+        return flow("task")
     else:
-        error_with_message("err prims")
+        error_with_message("construct error")
 
 def flow(cnFlow):
     c = { "flow": cnFlow }
     ident = lookahead("ID")
     if ident:
         c["name"] = ident
-    c["actions"] = utilFuncLi(prim)
+    c["actions"] = utilFuncLi(getPrimitive)
     return c
 
 def action():
-    idt = lookahead_f("ID")
+    idt = lookahead_f("ID", "Action")
     if lookahead("MANUAL"):
         t = "manual"
     elif lookahead("EXECUTABLE"):
@@ -150,12 +154,12 @@ def parseType():
         basType = "requires"
     else:
         error_with_message("basic type error")
-    lookahead_f("LEFTBRACKET")
+    lookahead_f("LEFTBRACKET", "lb")
     if basType in ["provides", "requires", "agent"]:
         p = parseEx()
     else:
-        p = lookahead_f("STRING")
-    lookahead_f("RIGHTBRACKET")
+        p = lookahead_f("STRING", "str")
+    lookahead_f("RIGHTBRACKET", "rb")
     r = (basType, p)
     return r
 
@@ -177,7 +181,7 @@ def valueEx():
     if idt:
         t = {"attr":idt}
         if lookahead("POINT"):
-            t['n_id'] = lookahead_f("ID")
+            t['n_id'] = lookahead_f("ID","val expr")
         return t
     error_with_message("Expr")
 
@@ -193,7 +197,7 @@ def parseEx():
 
 def utilFuncLi(par):
     items = []
-    lookahead_f("LEFTBRACKET")
+    lookahead_f("LEFTBRACKET", "lb")
     while not lookahead("RIGHTBRACKET"):
         items.append(par())
     return items
@@ -211,14 +215,15 @@ def output(list):
     else:
         print('No drugs in PML file')
 
-class ReturnExcept(Exception):pass
+class ErrorReport(Exception):pass
 
 def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
     output(drugsLi)
-    ## uncomment lines below to 
-    ## to print parsed file
-    #parsed = parse(contents)
-    #print parsed
+
+def runParser(f):
+    ct = f.read()
+    parsed = parse(ct)
+    print(parsed)

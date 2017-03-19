@@ -21,6 +21,7 @@ The group project repository for team Matte
 4. Loading OWL file will allow you to search the ontology for a class. We recommend searching for `lung AE` or `sore throat AE` 
 5. PML log files can be found in DDI-App/log_folder, and the DINTO log is in the DDI-App folder
 6. The function 'find drugs' will analysis and identify drugs from a PML file. Entering 1 will run on the file drugs.pml, 2 will run on nodrugs.pml
+7. The feature 'run parse' will parse the PML file and return 'no errors found' if it is well formed, and report the error otherwise. Entering 1 will run on the file drugs.pml, 2 will run on noname.pml, which contains an unnamed construct.
 
 ### Testing
 1. To test the PML file loading and checking, nagivate to the tests folder in the directory, and go to the pml folder there. Running `./labassessmenttest.sh`, `./drugstest.sh` or `./nodrugstest.sh` will test the application with the corresponding PML file and output their log file. Running `./errortest.sh` will show us in it's log the case of incorrect syntax in a PML file

@@ -70,7 +70,7 @@ def findClass(className,classList):
 		print ("Sorry, could not find a class by that name")
 		logfile.write(output)
 
-def main():
+def runLoadSeq():
 	choice = raw_input("Please enter the path to the owl onthology would you like to view, or enter quit to exit the application.\nThe following owl files are the ones known to work:\nOWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl\n\n")
 	if choice != "" and choice != "quit":
 		modelName = choice
@@ -102,6 +102,3 @@ def main():
 		logfile.write(output)
 		logfile.close()
 		return
-
-if __name__ == '__main__':
-   main()

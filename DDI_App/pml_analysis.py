@@ -2,7 +2,7 @@ import lxml
 import re # regexy 
 import sys
 import itertools
-from pmlfiles.drugdict import drugDict
+import drugdict
 
 #python pml_analysis.py pmlfiles/drugs.pml           -> returns list of drugs
 #python pml_analysis.py pmlfiles/nodrugs.pml         -> outputs 'No drugs in PML file' to terminal 

@@ -22,7 +22,6 @@ def runParse():
 	elif usr_input == "3":
 		f = open('pmlfiles/run_peos.pml', 'r')
 		out = runParser(f)
-		print(out)
 		printNoErr()
 		runParse()
 	elif usr_input == "0":

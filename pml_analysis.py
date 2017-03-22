@@ -63,12 +63,6 @@ def runParser(f):
     del constructLi[:]
     return parsed
 
-def getConstructs(f):
-    ct = f.read()
-    parsed = parse(ct)
-    print(constructLi)
-    del constructLi[:]
-
 def parse(data):
     global lextokens
     lextokens =lexer(data, LEXTOKENS)
@@ -270,8 +264,6 @@ def incLineNum():
 def resetLN():
     global lineNum
     lineNum=1
-
-class ErrorReport(Exception):pass
 
 class ErrorReport(Exception):pass
 

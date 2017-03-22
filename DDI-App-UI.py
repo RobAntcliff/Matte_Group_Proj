@@ -12,19 +12,17 @@ def runParse():
 	if usr_input == "1":
 		f = open('pmlfiles/drugs.pml', 'r')
 		out = runParser(f)
-		#print(out)
 		printNoErr()
 		runParse()
 	elif usr_input == "2":
 		f = open('pmlfiles/branch.pml', 'r')
 		out = runParser(f)
-		#print(out)
 		printNoErr()
 		runParse()
 	elif usr_input == "3":
 		f = open('pmlfiles/run_peos.pml', 'r')
 		out = runParser(f)
-		#print(out)
+		print(out)
 		printNoErr()
 		runParse()
 	elif usr_input == "0":

@@ -8,15 +8,32 @@ path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
 def runParse():
-	usr_input = input("Enter 1 or 2 to run on a particular file: ")
+	usr_input = input("Enter 1, 2, or 3 to run on a particular file. Press 0 to return to main menu: ")
 	if usr_input == "1":
 		f = open('pmlfiles/drugs.pml', 'r')
-		runParser(f)
+		out = runParser(f)
+		#print(out)
+		printNoErr()
+		runParse()
 	elif usr_input == "2":
-		fn= open('pmlfiles/noname2.pml', 'r')
-		runParser(fn)
+		f = open('pmlfiles/branch.pml', 'r')
+		out = runParser(f)
+		#print(out)
+		printNoErr()
+		runParse()
+	elif usr_input == "3":
+		f = open('pmlfiles/run_peos.pml', 'r')
+		out = runParser(f)
+		#print(out)
+		printNoErr()
+		runParse()
+	elif usr_input == "0":
+		return
 	else:
 		runParse()
+
+def printNoErr():
+	print("No errors in PML file")
 
 def findDrugs():
 	usr_input = input("Enter 1 for file with drugs, Enter 2 for file without drugs: ")

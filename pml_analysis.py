@@ -4,10 +4,6 @@ import sys
 import itertools
 from pmlfiles.drugdict import drugDict
 
-#python pml_analysis.py pmlfiles/drugs.pml           -> returns list of drugs
-#python pml_analysis.py pmlfiles/nodrugs.pml         -> outputs 'No drugs in PML file' to terminal 
-#python pml_analysis.py pmlfiles/error.pml_analysis  -> finds error and returns it
-
 lextokens = iter([])
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
@@ -36,8 +32,42 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'[ \n\t]+'                , None)
             )
 
+constructDict = {}
+descrLi =[]
 tempList = []
+constructLi = []
+actionCount = 0
+lineNum =1
+lexCount = 0
 sys.tracebacklimit = None
+
+def getConstructs(f):
+    ct = f.read()
+    parsed = parse(ct)
+    #print(constructLi)
+    print(constructDict)
+    resetLN()
+    del constructLi[:]
+    del descrLi[:]
+    del constructLi[:]
+
+def run(f):
+    contents = f.read()
+    parsed = parse(contents)
+    drugsLi = findDrugs(tempList)
+    output(drugsLi)
+
+def runParser(f):
+    ct = f.read()
+    parsed = parse(ct)
+    del constructLi[:]
+    return parsed
+
+def getConstructs(f):
+    ct = f.read()
+    parsed = parse(ct)
+    print(constructLi)
+    del constructLi[:]
 
 def parse(data):
     global lextokens
@@ -90,7 +120,6 @@ def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
         print('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
-        return -1
     return dat
 
 def error_with_message(curr_location):
@@ -98,14 +127,13 @@ def error_with_message(curr_location):
     raise ErrorReport('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
-    check = lookahead_f("PROCESS", "Process")
-    if check == -1:
-        return -1
+    lookahead_f("PROCESS", "Process")
     idt = lookahead_f("ID","Process")
-    if idt == -1:
-        return -1
+    constructLi.append("process")
+    constructLi.append(idt)
+    constructDict.update({"process":idt})
     ps = utilFuncLi(getPrimitive)
-    r = { "actions": ps, "name": idt }
+    r = { "actions": ps, "process name": idt }
     return r
 
 def getPrimitive():
@@ -124,11 +152,13 @@ def getPrimitive():
     else:
         error_with_message("construct error")
 
-def flow(cnFlow):
-    c = { "flow": cnFlow }
+def flow(construct):
+    c = { "construct type": construct }
     ident = lookahead("ID")
+    constructLi.append(construct)
+    constructLi.append(ident)
     if ident:
-        c["name"] = ident
+        c["construct name"] = ident
     c["actions"] = utilFuncLi(getPrimitive)
     return c
 
@@ -139,8 +169,13 @@ def action():
     elif lookahead("EXECUTABLE"):
         t = "executable"
     else:
-        t = ""
-    a = { "name": idt, "cflow": "action", "type" : t}
+        t = "not specified"
+    constructLi.append("action")
+    constructLi.append(idt)
+    constructLi.append(t)
+    constructDict.update({"action"+str(actionCount):idt})
+    incAct()
+    a = { "action name": idt, "construct type": "action", "action type" : t}
     for (ty, dat) in utilFuncLi(parseType):
         a[ty] = dat
     return a
@@ -159,7 +194,8 @@ def parseType():
         basType = "requires"
     else:
         error_with_message("basic type error")
-    lookahead_f("LEFTBRACKET", "lb")
+    x = lookahead_f("LEFTBRACKET", "lb")
+    incLineNum()
     if basType in ["provides", "requires", "agent"]:
         p = parseEx()
     else:
@@ -169,26 +205,26 @@ def parseType():
     return r
 
 def compExpr():
-    r = {"left": valueEx()}
+    r = {"left": constDesc()}
     rel = lookahead("COMPARE")
     if rel:
         r['rel'] = rel
-        r['right'] = valueEx()
+        r['right'] = constDesc()
     return r
 
-def valueEx():
-    attrCheck = lookahead("NUM") or lookahead("STRING")
-    if attrCheck:
-        attrCheck = attrCheck[1:-1]
-        tempList.append(attrCheck)
-        return {"attr": attrCheck}
+def constDesc():
+    descripCheck = lookahead("NUM") or lookahead("STRING")
+    if descripCheck:
+        descripCheck = descripCheck[1:-1]
+        tempList.append(descripCheck)
+        return {"description": descripCheck}
     idt = lookahead("ID")
     if idt:
-        t = {"attr":idt}
+        t = {"description":idt}
         if lookahead("POINT"):
             t['n_id'] = lookahead_f("ID","val expr")
         return t
-    error_with_message("Expr")
+    error_with_message("description")
 
 def parseEx():
     a =[compExpr()]
@@ -200,11 +236,14 @@ def parseEx():
         ch_op = lookahead("CONJUCT")
     return a
 
+
 def utilFuncLi(par):
     items = []
-    lookahead_f("LEFTBRACKET", "lb")
+    check = lookahead_f("LEFTBRACKET", "lb")
+    incLineNum()
     while not lookahead("RIGHTBRACKET"):
         items.append(par())
+    incLineNum()
     return items
 
 def containsDrugs(list):
@@ -220,16 +259,22 @@ def output(list):
     else:
         print('No drugs in PML file')
 
+def incAct():
+    global actionCount
+    actionCount += 1
+
+def incLineNum():
+    global lineNum
+    lineNum += 1
+
+def resetLN():
+    global lineNum
+    lineNum=1
+
 class ErrorReport(Exception):pass
 
-def run(f):
-    contents = f.read()
-    parsed = parse(contents)
-    drugsLi = findDrugs(tempList)
-    output(drugsLi)
+class ErrorReport(Exception):pass
 
-def runParser(f):
-    ct = f.read()
-    parsed = parse(ct)
-    #print(parsed)
-    print("No errors found")
+
+
+

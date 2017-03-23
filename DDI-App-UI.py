@@ -30,14 +30,14 @@ def findClash():
 		out = findConsClash(f)
 		findClash()
 	elif usr_input == "2":
-		f = open('pmlfiles/clash1.pml', 'r')
+		f = open('pmlfiles/drugs.pml', 'r')
 		out = findConsClash(f)
 		findClash()
 	elif usr_input == "0":
 		return
 	else:
 		findClash()
-
+		
 def findUnnamed():
 	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
 	if usr_input == "1":

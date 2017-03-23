@@ -36,10 +36,27 @@ sys.tracebacklimit = None
 def findConsClash(f):
     ct = f.read()
     parsed = parse(ct)
-    #checkForClashes(consRef)
-    print(consRef)
-    resetLN()
-    resetVars()
+    checkForClashes(clashes)
+    if not clashFinal:
+        print("No Construct name clashes in PML file.")
+        resetVars()
+    else:
+        for cname in clashes:
+             printClashes(cname)
+             resetVars()
+
+def checkForClashes(clashes):
+    for i in clashes:
+        for j in consRef:
+            if j[2] == i:
+                clashFinal.append(j)
+
+def printClashes(cname):
+    print("Construct name clash occured : Name -> " + cname)
+    for i in clashFinal:
+        ctype = i[0]
+        ln = i[3]
+        print("Construct Type -> " + ctype + " : Line number -> " + str(ln) +".")
 
 def getConsDeets(f):
     ct = f.read()
@@ -47,11 +64,6 @@ def getConsDeets(f):
     print(consRef)
     resetLN()
     resetVars()
-
-def checkForClashes(ref):
-    for i in ref:
-        for x in i:
-            print(x)
 
 def findTaskUsed(f):
     ct = f.read()
@@ -142,9 +154,8 @@ def error_with_message(curr_location):
 def parseProc():
     lookahead_f("PROCESS", "Process")
     idt = lookahead_f("ID","Process")
-    constructLi.append("process")
-    constructLi.append(idt)
-    constructDict.update({"process":idt})
+    checkClashes(consNames, idt)
+    consNames.append(idt)
     tup = ("Process", procCnt, idt, lineNum)
     consRef.append(tup)
     incProcCnt()
@@ -173,14 +184,14 @@ def flow(construct):
         x = ("task", lineNum)
         taskCheck.append(x)
     c = { "construct type": construct }
-    ident = lookahead("ID")
-    constructLi.append(construct)
-    constructLi.append(ident)
-    constructDict.update({construct:ident})
 
+    ident = lookahead("ID")
+    checkClashes(consNames, ident)
+    consNames.append(ident)
     consCnt = incConsCnt(construct)
     tup = (construct, consCnt, ident, lineNum)
     consRef.append(tup)
+
     if ident:
         c["construct name"] = ident
     c["actions"] = utilFuncLi(getPrimitive)
@@ -195,14 +206,20 @@ def action():
     else:
         t = "not specified"
 
+    checkClashes(consNames, idt)
+    consNames.append(idt)
     tup = ("action", actCnt, idt, lineNum)
     consRef.append(tup)
     incActCnt()
-
+    
     a = { "action name": idt, "construct type": "action", "action type" : t}
     for (ty, dat) in utilFuncLi(parseType):
         a[ty] = dat
     return a
+
+def checkClashes(nmLi, name):
+    if name in consNames and name not in clashes:
+        clashes.append(name)
 
 def parseType():
     basType = None
@@ -283,10 +300,12 @@ def output(list):
         print('No drugs in PML file')
 
 def resetVars():
-    del constructLi[:]
+    del consNames[:]
     del descrLi[:]
     del consRef[:]
     del taskCheck[:]
+    del clashes[:]
+    del clashFinal[:]
     resetLN()
     resetTskCnt()
     resetSelCnt()

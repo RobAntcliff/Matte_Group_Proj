@@ -14,5 +14,8 @@ tempList = []
 constructLi = []
 consRef=[]
 taskCheck=[]
+clashes=[]
+clashFinal=[]
+consNames=[]
 lextokens=iter([])
 

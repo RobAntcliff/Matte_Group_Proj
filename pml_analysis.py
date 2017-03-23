@@ -3,8 +3,7 @@ import re # regexy
 import sys
 import itertools
 from pmlfiles.drugdict import drugDict
-
-lextokens = iter([])
+from utils import *
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
             , (r'sequence[ \n\t{]'        , "SEQUENCE")
@@ -32,24 +31,43 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'[ \n\t]+'                , None)
             )
 
-constructDict = {}
-descrLi =[]
-tempList = []
-constructLi = []
-actionCount = 0
-lineNum =1
-lexCount = 0
 sys.tracebacklimit = None
 
-def getConstructs(f):
+def findConsClash(f):
     ct = f.read()
     parsed = parse(ct)
-    #print(constructLi)
-    print(constructDict)
+    #checkForClashes(consRef)
+    print(consRef)
     resetLN()
-    del constructLi[:]
-    del descrLi[:]
-    del constructLi[:]
+    resetVars()
+
+def getConsDeets(f):
+    ct = f.read()
+    parsed = parse(ct)
+    print(consRef)
+    resetLN()
+    resetVars()
+
+def checkForClashes(ref):
+    for i in ref:
+        for x in i:
+            print(x)
+
+def findTaskUsed(f):
+    ct = f.read()
+    parsed = parse(ct)
+    if not taskCheck:
+        print("Task construct not used in PML file.")
+    else:
+        print("Task construct is now deprecated, please use Sequence in its place.")
+        if len(taskCheck) > 1:
+            print("Task was used at lines ")
+            for i in taskCheck:
+                print([i][1]) 
+                print(" ")
+        else:
+            print("Task was used at line " + str(taskCheck[0][1]) + ".")
+    resetVars()
 
 def run(f):
     contents = f.read()
@@ -57,10 +75,10 @@ def run(f):
     drugsLi = findDrugs(tempList)
     output(drugsLi)
 
-def runParser(f):
+def findUnnamedC(f):
     ct = f.read()
     parsed = parse(ct)
-    del constructLi[:]
+    resetVars()
     return parsed
 
 def parse(data):
@@ -68,6 +86,14 @@ def parse(data):
     lextokens =lexer(data, LEXTOKENS)
     par =parseProc()
     return par
+
+def findDrugs(list):
+    drugList = []
+    for i in list: 
+        if i in drugDict.keys() and i not in drugList:
+            drugList.append(i)
+    resetVars()
+    return drugList
 
 def lexer(data, exprs):
     head =0
@@ -83,13 +109,6 @@ def lexer(data, exprs):
                 break
         else:
             raise ErrorReport('Error char -> "%s"\n' % data[head]) 
-
-def findDrugs(list):
-    drugList = []
-    for i in list: 
-        if i in drugDict.keys() and i not in drugList:
-            drugList.append(i)
-    return drugList
 
 def addToken(value):
     global lextokens
@@ -113,7 +132,7 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        print('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
+        raise ErrorReport('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
     return dat
 
 def error_with_message(curr_location):
@@ -126,6 +145,9 @@ def parseProc():
     constructLi.append("process")
     constructLi.append(idt)
     constructDict.update({"process":idt})
+    tup = ("Process", procCnt, idt, lineNum)
+    consRef.append(tup)
+    incProcCnt()
     ps = utilFuncLi(getPrimitive)
     r = { "actions": ps, "process name": idt }
     return r
@@ -147,10 +169,18 @@ def getPrimitive():
         error_with_message("construct error")
 
 def flow(construct):
+    if construct == "task":
+        x = ("task", lineNum)
+        taskCheck.append(x)
     c = { "construct type": construct }
     ident = lookahead("ID")
     constructLi.append(construct)
     constructLi.append(ident)
+    constructDict.update({construct:ident})
+
+    consCnt = incConsCnt(construct)
+    tup = (construct, consCnt, ident, lineNum)
+    consRef.append(tup)
     if ident:
         c["construct name"] = ident
     c["actions"] = utilFuncLi(getPrimitive)
@@ -164,11 +194,11 @@ def action():
         t = "executable"
     else:
         t = "not specified"
-    constructLi.append("action")
-    constructLi.append(idt)
-    constructLi.append(t)
-    constructDict.update({"action"+str(actionCount):idt})
-    incAct()
+
+    tup = ("action", actCnt, idt, lineNum)
+    consRef.append(tup)
+    incActCnt()
+
     a = { "action name": idt, "construct type": "action", "action type" : t}
     for (ty, dat) in utilFuncLi(parseType):
         a[ty] = dat
@@ -230,7 +260,6 @@ def parseEx():
         ch_op = lookahead("CONJUCT")
     return a
 
-
 def utilFuncLi(par):
     items = []
     check = lookahead_f("LEFTBRACKET", "lb")
@@ -253,9 +282,67 @@ def output(list):
     else:
         print('No drugs in PML file')
 
-def incAct():
-    global actionCount
-    actionCount += 1
+def resetVars():
+    del constructLi[:]
+    del descrLi[:]
+    del consRef[:]
+    del taskCheck[:]
+    resetLN()
+    resetTskCnt()
+    resetSelCnt()
+    resetBchCnt()
+    resetItrCnt()
+    resetActCnt()
+
+def incConsCnt(consType):
+    if consType == "sequence":
+        x = seqCnt
+        incSeqCnt()
+    elif consType == "task":
+        x = taskCnt
+        incTaskCnt() 
+    elif consType == "selection":
+        x = selCnt 
+        incSelCnt()
+    elif consType == "branch":
+        x = branchCnt 
+        incBranchCnt()
+    elif consType == "iteration":
+        x = iterCnt 
+        incIterCnt()
+    return x
+
+def incActCnt():
+    global actCnt
+    actCnt += 1
+
+def incProcCnt():
+    global procCnt
+    procCnt += 1
+
+def incSeqCnt():
+    global seqCnt
+    seqCnt += 1
+
+def incSelCnt():
+    global selCnt
+    selCnt += 1
+
+def incTaskCnt():
+    global taskCnt
+    taskCnt += 1
+
+def incBranchCnt():
+    global branchCnt
+    branchCnt += 1
+
+def incIterCnt():
+    global iterCnt 
+    iterCnt += 1
+
+def incLineNum():
+    global lineNum
+    lineNum += 1
 
 def incLineNum():
     global lineNum
@@ -264,6 +351,26 @@ def incLineNum():
 def resetLN():
     global lineNum
     lineNum=1
+
+def resetTskCnt():
+    global taskCnt
+    taskCnt = 1
+
+def resetSelCnt():
+    global selCnt
+    selCnt = 1
+
+def resetBchCnt():
+    global branchCnt
+    branchCnt = 1
+
+def resetItrCnt():
+    global iterCnt
+    iterCnt = 1
+
+def resetActCnt():
+    global actCnt
+    actCnt = 1
 
 class ErrorReport(Exception):pass
 

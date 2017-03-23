@@ -1,5 +1,6 @@
 import subprocess
 import time
+import utils
 from pml_analysis import *
 
 commands = {}
@@ -7,39 +8,65 @@ running = True
 path = " "
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
 
-def runParse():
-	usr_input = input("Enter 1, 2, or 3 to run on a particular file. Press 0 to return to main menu: ")
+def findTask():
+	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
 	if usr_input == "1":
-		f = open('pmlfiles/drugs.pml', 'r')
-		out = runParser(f)
-		printNoErr()
-		runParse()
-	elif usr_input == "2":
 		f = open('pmlfiles/branch.pml', 'r')
-		out = runParser(f)
-		printNoErr()
-		runParse()
-	elif usr_input == "3":
-		f = open('pmlfiles/run_peos.pml', 'r')
-		out = runParser(f)
-		printNoErr()
-		runParse()
+		out = findTaskUsed(f)
+		findTask()
+	elif usr_input == "2":
+		f = open('pmlfiles/clash1.pml', 'r')
+		out = findTaskUsed(f)
+		findTask()
 	elif usr_input == "0":
 		return
 	else:
-		runParse()
+		findTask()
 
-def printNoErr():
-	print("No errors in PML file")
+def findClash():
+	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
+	if usr_input == "1":
+		f = open('pmlfiles/clash1.pml', 'r')
+		out = findConsClash(f)
+		findClash()
+	elif usr_input == "2":
+		f = open('pmlfiles/clash1.pml', 'r')
+		out = findConsClash(f)
+		findClash()
+	elif usr_input == "0":
+		return
+	else:
+		findClash()
+
+def findUnnamed():
+	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
+	if usr_input == "1":
+		f = open('pmlfiles/drugs.pml', 'r')
+		out = findUnnamedC(f)
+		printErr()
+		findUnnamed()
+	elif usr_input == "2":
+		f = open('pmlfiles/noname.pml', 'r')
+		out = findUnnamedC(f)
+		printErr()
+		findUnnamed()
+	elif usr_input == "0":
+		return
+	else:
+		findUnnamed()
 
 def findDrugs():
-	usr_input = input("Enter 1 for file with drugs, Enter 2 for file without drugs: ")
+	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
 	if usr_input == "1":
 		f = open('pmlfiles/drugs.pml', 'r')
 		run(f)
+		findDrugs()
 	elif usr_input == "2":
-		fn = open('pmlfiles/nodrugs.pml', 'r')
-		run(fn)
+		f = open('pmlfiles/nodrugs.pml', 'r')
+		run(f)
+		findDrugs()
+	elif usr_input == "0":
+		return
 	else:
 		findDrugs()
 
@@ -80,15 +107,20 @@ def exitApplication():
 	running = False
 
 def printHelp():
-	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload OWL: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nrun parse: Scan the file for errors\nquit: Close the application")
+	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload OWL: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nfind task: Check PML file to see if deprecated Task construct is used\nfind clash: Analyses PML file and checks for construct name clash\nfind unnamed: Scan the file for errors\nquit: Close the application")
 
-commands = {"help"      : printHelp,
-            "check PML" : runCheck,
-            "load OWL"	: loadOwl,
-            "quit"      : exitApplication,
-	    	"load PML"  : loadPMLFile,
-	    	"find drugs": findDrugs,
-	    	"run parse" : runParse
+def printErr():
+	print("No errors in PML file")
+
+commands = {"help"         : printHelp,
+            "check PML"    : runCheck,
+            "load OWL"	   : loadOwl,
+            "quit"         : exitApplication,
+	    	"load PML"     : loadPMLFile,
+	    	"find drugs"   : findDrugs,
+	    	"find clash"   : findClash,
+	    	"find task"    : findTask,
+	    	"find unnamed" : findUnnamed
 	    	}
 print("Application started, see available commands below:")
 printHelp()

@@ -1,9 +1,9 @@
-import ontospy
+import DDI_App.ontospy
 import datetime
-import rdflib
+import DDI_App.rdflib
 import os 
 
-logfile = open("DDI-App/loadDINTO.log","w+")
+logfile = open("DDI_App/loadDINTO.log","w+")
 
 def getTime():
 	now = datetime.datetime.now()

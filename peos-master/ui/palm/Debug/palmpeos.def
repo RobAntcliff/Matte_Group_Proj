@@ -1,4 +1,0 @@
-application { "palmpeos" plmp } 
-multiple code {
- "init" "krnl"
-}

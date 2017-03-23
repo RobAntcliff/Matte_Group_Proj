@@ -17,7 +17,7 @@ sudo apt-get install g++
 
 sudo apt-get install libncurses5-dev
 sudo apt-get install python-pip
-sudo pip install ontospy
+sudo pip -H install ontospy
 
 cd peos-master
 make

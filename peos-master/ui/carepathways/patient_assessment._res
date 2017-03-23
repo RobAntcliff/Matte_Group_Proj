@@ -1,3 +1,0 @@
-patient_symptoms: patientId.spt :
-patient_record : patientId.hl7 :
-assessment : patientId.hl7 :

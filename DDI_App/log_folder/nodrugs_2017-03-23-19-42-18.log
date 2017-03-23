@@ -1,0 +1,6 @@
+2017-03-23-19-42-21: DDI_App/pmlfiles/nodrugs.pml:7: action 'test' provides but does not require '"remedy"'
+DDI_App/pmlfiles/nodrugs.pml:14: action 'test2' provides but does not require '"remedy"'
+DDI_App/pmlfiles/nodrugs.pml:6: "drip" in action 'test' is unprovided
+DDI_App/pmlfiles/nodrugs.pml:13: "sleep" in action 'test2' is unprovided
+DDI_App/pmlfiles/nodrugs.pml:7: "remedy" in action 'test' is not consumed
+DDI_App/pmlfiles/nodrugs.pml:14: "remedy" in action 'test2' is not consumed

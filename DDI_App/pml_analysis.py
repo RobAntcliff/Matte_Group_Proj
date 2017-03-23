@@ -2,7 +2,7 @@ import lxml
 import re # regexy 
 import sys
 import itertools
-import drugdict
+import DDI_App.drugdict
 
 #python pml_analysis.py pmlfiles/drugs.pml           -> returns list of drugs
 #python pml_analysis.py pmlfiles/nodrugs.pml         -> outputs 'No drugs in PML file' to terminal 
@@ -233,3 +233,4 @@ def runParser(f):
     parsed = parse(ct)
     #print(parsed)
     print("No errors found")
+    return "No errors found."

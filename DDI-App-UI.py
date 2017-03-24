@@ -6,100 +6,137 @@ from pml_analysis import *
 commands = {}
 running = True
 path = " "
-timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
+
+datestr = time.strftime("%Y-%m-%d")
+timestr = time.strftime("%H:%M:%S")
+
+logfile = open('log_folder/PML/'+ timestr + '_' + datestr + '.log', 'w')
 
 def findTask():
-	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
-	if usr_input == "1":
-		f = open('pmlfiles/branch.pml', 'r')
-		out = findTaskUsed(f)
-		findTask()
-	elif usr_input == "2":
-		f = open('pmlfiles/clash1.pml', 'r')
-		out = findTaskUsed(f)
-		findTask()
-	elif usr_input == "0":
+	global path
+
+	if path == " ":
+		print("\n    WARNING: No PML file has been selected. Please load a file and try again.\n")
+		printHelp()
 		return
+		
 	else:
-		findTask()
+		f = open(path, 'r')
+		out = findTaskUsed(f)
+	
+	printHelp()
+	return
 
 def findClash():
-	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
-	if usr_input == "1":
-		f = open('pmlfiles/clash1.pml', 'r')
-		out = findConsClash(f)
-		findClash()
-	elif usr_input == "2":
-		f = open('pmlfiles/drugs.pml', 'r')
-		out = findConsClash(f)
-		findClash()
-	elif usr_input == "0":
+	global path
+
+	if path == " ":
+		print("\n    WARNING: No PML file has been selected. Please load a file and try again.\n")
+		printHelp()
 		return
+		
 	else:
-		findClash()
+		f = open(path, 'r')
+		out = findConsClash(f)
+	
+	printHelp()
+	return
 		
 def findUnnamed():
-	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
-	if usr_input == "1":
-		f = open('pmlfiles/drugs.pml', 'r')
-		out = findUnnamedC(f)
-		printErr()
-		findUnnamed()
-	elif usr_input == "2":
-		f = open('pmlfiles/noname.pml', 'r')
-		out = findUnnamedC(f)
-		printErr()
-		findUnnamed()
-	elif usr_input == "0":
+	global path
+
+	if path == " ":
+		print("\n    WARNING: No PML file has been selected. Please load a file and try again.\n")
+		printHelp()
 		return
+		
 	else:
-		findUnnamed()
+		f = open(path, 'r')
+		out = findUnnamedC(f)
+		printErr()
+	
+	printHelp()
+	return
+
 
 def findDrugs():
-	usr_input = input("Enter 1 or 2 to run on a particular file. Press 0 to return to main menu: ")
-	if usr_input == "1":
-		f = open('pmlfiles/drugs.pml', 'r')
-		run(f)
-		findDrugs()
-	elif usr_input == "2":
-		f = open('pmlfiles/nodrugs.pml', 'r')
-		run(f)
-		findDrugs()
-	elif usr_input == "0":
-		return
+	global path
+	if path == " ":
+		print("\n   WARNING: No PML file has been selected. Please load a file and try again.\n")
+
 	else:
-		findDrugs()
+		fn = open(path, 'r')
+		run(fn)
+	
+	printHelp()
+	return
 
 def loadPMLFile():
 	global path
-	path = input("Choose an option :\n Enter 1 for Lab_Assessment.pml \n Enter 2 for drugs.pml \n Enter 3 for error.pml \n Enter 4 for nodrugs.pml \n")
+
+	entered = input("\nTo select a PML file enter \n  1:  if you wish to use your own PML file\nOr enter to choose from our selection of PML files\n  2:  for Lab_Assessment.pml \n  3:  for drugs.pml \n  4:  for error.pml \n  5:  for nodrugs.pml\n  6:  for branch.pml\n  7:  for clash1.pml\n  return:  to return to main menu\n")
+	
+	if entered == "1":
+		entered = input("\nEnter the path to the PML file you wish to use or enter return to return to main menu.\n")
+		if entered == "return": 
+			printHelp()
+			return
+		else:
+			path = entered
+	elif entered == "2":
+		path = "pmlfiles/Lab_Assessment.pml"
+
+	elif entered == "3":
+		path = "pmlfiles/drugs.pml"
+
+	elif entered == "4":
+		path = "pmlfiles/error.pml"
+	
+	elif entered == "5":
+		path = "pmlfiles/nodrugs.pml"
+
+	elif entered == "6":
+		path = "pmlfiles/branch.pml"
+
+	elif entered == "7":
+		path = "pmlfiles/clash1.pml"
+
+	elif entered == "return":
+		print("\n    Returning to menu.\n")
+		printHelp()
+		return
+	else:
+		loadPMLFile()
+	print("\n    You have selected " + str(path) + "\n")
+	logfile.write(str(path) + "loaded. \n")	
+
+	printHelp()
+	return
 
 def runCheck():
 	global path
+	global logfile
+
 	if path == " ":
-		print("No PML file has been selected.\nPlease enter the \'select\' command.")
+		print("\n    WARNING: No PML file has been selected. Please load a file and try again\n")
+		printHelp
+		return
 	else:
-		with open('DDI-App/log_folder/test' + timestr + '.log', 'w') as f:
-			if path == "1":
-				path = "DDI-App/Lab_Assessment.pml"
-			if path == "2":
-				path = "pmlfiles/drugs.pml"
-			if path == "3":
-				path = "pmlfiles/error.pml"
-			if path == "4":
-				path = "pmlfiles/nodrugs.pml"
-			try:
-				pml_check = 'DDI-App/Check/pmlcheck'
-				check_results = subprocess.check_output([pml_check, path])
-				check_results_str = check_results.decode("utf-8")
-				#str(check_results, 'utf-8')
-			except subprocess.CalledProcessError as e:
-				check_results_str = "The following errors were found in the selected PML file: Invalid Syntax"
-			f.write(check_results_str)
-			#print(check_results_str)
+		try:
+			pml_check = 'DDI/Check/pmlcheck'
+			check_results = subprocess.check_output([pml_check, path])
+			check_results_str = check_results.decode("utf-8")
+			print("    The PML file " +str(path) + " has been checked, and has no errors\n")
+			logfile.write("\nCheck performed. No errors found\n")
+			#str(check_results, 'utf-8')
+
+		except subprocess.CalledProcessError as e:
+			check_results_str = "\nCheck performed: The following errors were found in the selected PML file: Invalid Syntax\n"
+		logfile.write(check_results_str)
+		#print(check_results_str)
 
 def loadOwl():
-	loadDinto = 'DDI-App/loadDINTOClass.py'
+	loadDinto = 'DDI/loadDINTOClass.py'
 	subprocess.call(['python',loadDinto])
 
 def exitApplication():
@@ -107,16 +144,17 @@ def exitApplication():
 	running = False
 
 def printHelp():
-	print("help: Display this list of commands\nload PML:  Load a PML file to be worked with\ncheck PML: Check a loaded PML file for errors\nload OWL: Load an owl onthology and search it for a class\nfind drugs: Find drugs in PML file\nfind task: Check PML file to see if deprecated Task construct is used\nfind clash: Analyses PML file and checks for construct name clash\nfind unnamed: Scan the file for errors\nquit: Close the application")
+	print("\nTo run a command enter \n  help:  to display this list of commands at any time\n  load pml:  to load a PML file to be worked with\n  check pml:  to check a loaded PML file for errors\n  find drugs:  to search for drugs in a loaded PML file\n  find task:  Check PML file to see if deprecated Task construct is used\n  find clash:  Analyses PML file and checks for construct name clash\n  find unnamed:  Scan the file for errors\n  load owl:  to load an OWL ontology\n  quit:  to close the application\n")
+
 
 def printErr():
 	print("No errors in PML file")
 
 commands = {"help"         : printHelp,
-            "check PML"    : runCheck,
-            "load OWL"	   : loadOwl,
+            "check pml"    : runCheck,
+            "load owl"	   : loadOwl,
             "quit"         : exitApplication,
-	    	"load PML"     : loadPMLFile,
+	    	"load pml"     : loadPMLFile,
 	    	"find drugs"   : findDrugs,
 	    	"find clash"   : findClash,
 	    	"find task"    : findTask,
@@ -129,5 +167,5 @@ while running:
 	if usr_command in commands:
 		commands[usr_command]()
 	else:
-		print("Command not found.\nPlease enter a valid command from the list below.")
+		print("\nCommand not found.\nPlease enter a valid command from the list below.\n")
 		printHelp()

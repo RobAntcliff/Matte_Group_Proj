@@ -2,13 +2,20 @@ import ontospy
 import datetime
 import rdflib
 import os 
+import time
 
-logfile = open("DDI-App/loadDINTO.log","w+")
+datestr = time.strftime("%Y-%m-%d")
+timestr = time.strftime("%H:%M:%S")
+
+logfile = open("log_folder/DINTO/" + timestr + "_" + datestr + ".log","w+")
 
 def getTime():
 	now = datetime.datetime.now()
 	time = "%s/%s/%s at %s:%s:%s" % (now.day,now.month,now.year, now.hour, now.minute, now.second) 
 	return time
+
+def printHelp():
+	print("\nTo run a command enter \n  help:  to display this list of commands at any time\n  load pml:  to load a PML file to be worked with\n  check pml:  to check a loaded PML file for errors\n  find drugs:  to search for drugs in a loaded PML file\n  run parse:  to scan the file for errors\n  load pml: to load an OWL ontology\n  quit:  to close the application\n")
 	
 def getClasses(owl):
 	model = ontospy.Ontospy(owl)
@@ -71,37 +78,63 @@ def findClass(className,classList):
 		logfile.write(output)
 
 def main():
-	choice = raw_input("Please enter the path to the owl onthology would you like to view, or enter quit to exit the application.\nThe following owl files are the ones known to work:\nOWL/DINTO/DINTO1.2/DINTO 1.2 additional material/DINTO 1.2 subsets/OAE_DINTO_subset.owl\n\n")
-	if choice != "" and choice != "quit":
-		modelName = choice
-		output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
-		logfile.write(output)
-		classList = getClasses(modelName)
-		if classList != []:
-			quit = False
-			while quit == False:
-				className = raw_input("Choose a class or enter quit to exit the application:")
-				if className == "quit":
-					quit = True
-				else:	
-					output = ("%s :: User selected finding class %s \n" %(getTime(),className))
-					logfile.write(output)
-					findClass(className,classList)
-			output = ("%s :: Exiting application \n" %(getTime()))
-			logfile.write(output)
-			logfile.close()
-		else:
-			print ("----------")
-			print ("\nCannot read that file. Please try again\n")
-			main()
-	elif choice == " " or choice == "":
-		print ("You have not entered anything. Please try again")
-		main()
-	else:		
+	choice = raw_input("\n To choose an OWL ontology to work with you can enter \n  1:  to use the OAE  subset\n  2:  to use the BRO subset\n  3:  to use PKO subset\n  4:  to use the error.owl\n  5:  to use your own OWL file\n  return:  to return to main menu\n")
+
+	if choice == "return":
 		output = ("%s :: Exiting application \n" %(getTime()))
 		logfile.write(output)
 		logfile.close()
 		return
+
+	elif choice == "1":
+		modelName = 'owlfiles/OAE_DINTO_subset.owl'
+	
+	elif choice == "4":
+		modelName = 'owlfiles/error.owl'
+
+	elif choice == "3":
+		modelName = 'owlfiles/BRO_DINTO_subset.owl'
+
+	elif choice == "2":
+		modelName = 'owlfiles/PKO_DINTO_subset.owl'
+
+	elif choice == "5":
+		choice = input("\nEnter the path of the OWL file you wish to use or enter return to return to main menu\n")
+		if choice == "return":
+			output = ("%s :: Exiting application \n" %(getTime()))
+			logfile.write(output)
+			logfile.close()
+			return	
+
+		else:
+			modelName = choice
+		
+	else: 
+		main()
+
+	print("\nLoading " + str(modelName) +"\n")
+	output = ("%s :: Loading in owl file at %s \n" %(getTime(),modelName))
+	logfile.write(output)
+	classList = getClasses(modelName)
+
+	if classList != []:
+		quit = False
+
+		while quit == False:
+			className = raw_input("\nEnter a class to search for or enter return to return to main menu\n")
+			if className == "return":
+				printHelp()
+				quit = True
+			else:	
+				output = ("%s :: User selected finding class %s \n" %(getTime(),className))
+				logfile.write(output)
+				findClass(className,classList)
+		output = ("%s :: Exiting application \n" %(getTime()))
+		logfile.write(output)
+		logfile.close()
+	else:
+		print ("\nCannot read that file. Please try again\n")
+		main()
 
 if __name__ == '__main__':
    main()

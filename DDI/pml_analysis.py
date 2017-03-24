@@ -2,8 +2,8 @@ import lxml
 import re # regexy 
 import sys
 import itertools
-from pmlfiles.drugdict import drugDict
-from utils import *
+from DDI.drugdict import drugDict
+from DDI.utils import *
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
             , (r'sequence[ \n\t{]'        , "SEQUENCE")

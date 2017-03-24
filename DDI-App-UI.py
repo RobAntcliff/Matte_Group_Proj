@@ -1,7 +1,9 @@
 import subprocess
 import time
-import utils
-from pml_analysis import *
+import sys
+
+from DDI.pml_analysis import *
+from DDI.utils import *
 
 commands = {}
 running = True

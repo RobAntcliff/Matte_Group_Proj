@@ -85,6 +85,7 @@ def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
+    resetVars()
     output(drugsLi)
 
 def findUnnamedC(f):
@@ -104,7 +105,6 @@ def findDrugs(list):
     for i in list: 
         if i in drugDict.keys() and i not in drugList:
             drugList.append(i)
-    resetVars()
     return drugList
 
 def lexer(data, exprs):
@@ -144,7 +144,7 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        raise ErrorReport('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
+        raise ErrorReport('Unnamed Construct found : Construct type -> "%s" : Line Number -> "%s" : Expecting -> "%s" Name, Received -> "%s".\n' % (const_name,lineNum,tag,dat))
     return dat
 
 def error_with_message(curr_location):

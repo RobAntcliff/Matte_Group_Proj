@@ -1,6 +1,7 @@
 import subprocess
 import time
 import sys
+import csv
 
 from DDI.pml_analysis import *
 from DDI.utils import *
@@ -8,11 +9,13 @@ from DDI.utils import *
 commands = {}
 running = True
 path = " "
+mock = " "
 
 datestr = time.strftime("%Y-%m-%d")
 timestr = time.strftime("%H:%M:%S")
 
-logfile = open('log_folder/PML/'+ timestr + '_' + datestr + '.log', 'w')
+pml_logfile = open('log_folder/PML/'+ timestr + '_' + datestr + '.log', 'w')
+mock_logfile = open('log_folder/MOCK/'+ timestr + '_' + datestr + '.log', 'w')
 
 def findTask():
 	global path
@@ -109,15 +112,47 @@ def loadPMLFile():
 		return
 	else:
 		loadPMLFile()
+
 	print("\n    You have selected " + str(path) + "\n")
-	logfile.write(str(path) + "loaded. \n")	
+	pml_logfile.write(str(path) + " loaded. \n")	
+
+	printHelp()
+	return
+
+def loadMock():
+	global mock
+	global mock_logfile
+
+	usr_input = input("\nTo select a mock DINTO file enter \n  1:  if you wish to use your own mock DINTO file\nOr enter to choose from our selection of mock DINTO files\n  2:  for DDI.csv \n  return:  to return to main menu\n")
+
+	if usr_input == "1":
+		entered = input("\nEnter the path to the PML file you wish to use or enter return to return to main menu.\n")
+
+		if entered == "return": 
+			printHelp()
+			return
+		else:
+			mock = entered
+
+	elif usr_input == "return":
+		printHelp()
+		return
+
+	elif usr_input == "2":
+		mock = "mockfiles/DDI.csv"		
+	
+	else:
+		loadMock()
+
+	print("\n    You have selected " + str(mock) + "\n")
+	mock_logfile.write(str(mock) + " loaded. \n")	
 
 	printHelp()
 	return
 
 def runCheck():
 	global path
-	global logfile
+	global pml_logfile
 
 	if path == " ":
 		print("\n    WARNING: No PML file has been selected. Please load a file and try again\n")
@@ -129,13 +164,37 @@ def runCheck():
 			check_results = subprocess.check_output([pml_check, path])
 			check_results_str = check_results.decode("utf-8")
 			print("    The PML file " +str(path) + " has been checked, and has no errors\n")
-			logfile.write("\nCheck performed. No errors found\n")
+			pml_logfile.write("\nCheck performed. No errors found\n")
 			#str(check_results, 'utf-8')
 
 		except subprocess.CalledProcessError as e:
 			check_results_str = "\nCheck performed: The following errors were found in the selected PML file: Invalid Syntax\n"
-		logfile.write(check_results_str)
+		pml_logfile.write(check_results_str)
 		#print(check_results_str)
+
+def readMock():
+	global mock
+	global mock_logfile
+	mockread = "    -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \n"
+
+
+	if mock == " ":
+		print("\n    WARNING: No mock DINTO file has been selected. Please load a file and try again\n")
+		printHelp
+		return
+
+	else:
+		with open(mock) as csvfile:
+			reader = csv.DictReader(csvfile)
+			for row in reader:
+				mockread += str("    " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
+	
+	print(mockread)
+	mock_logfile.write(mockread)
+
+	printHelp()
+	return		
+
 
 def loadOwl():
 	loadDinto = 'DDI/loadDINTOClass.py'
@@ -146,7 +205,7 @@ def exitApplication():
 	running = False
 
 def printHelp():
-	print("\nTo run a command enter \n  help:  to display this list of commands at any time\n  load pml:  to load a PML file to be worked with\n  check pml:  to check a loaded PML file for errors\n  find drugs:  to search for drugs in a loaded PML file\n  find task:  Check PML file to see if deprecated Task construct is used\n  find clash:  Analyses PML file and checks for construct name clash\n  find unnamed:  Scan the file for errors\n  load owl:  to load an OWL ontology\n  quit:  to close the application\n")
+	print("\nTo run a command enter \n  help:  to display this list of commands at any time\n  load pml:  to load a PML file to be worked with\n  check pml:  to check a loaded PML file for errors\n  find drugs:  to search for drugs in a loaded PML file\n  find task:  Check PML file to see if deprecated Task construct is used\n  find clash:  Analyses PML file and checks for construct name clash\n  find unnamed:  Scan the file for errors\n  load owl:  to load an OWL ontology\n  load mock:  to load a mock DINTO file to be used to identify DDIs\n  read mock:  to read the loaded mock DINTO file\n  quit:  to close the application\n")
 
 
 def printErr():
@@ -160,7 +219,9 @@ commands = {"help"         : printHelp,
 	    	"find drugs"   : findDrugs,
 	    	"find clash"   : findClash,
 	    	"find task"    : findTask,
-	    	"find unnamed" : findUnnamed
+	    	"find unnamed" : findUnnamed,
+		"load mock" : loadMock,
+		"read mock" : readMock
 	    	}
 print("Application started, see available commands below:")
 printHelp()

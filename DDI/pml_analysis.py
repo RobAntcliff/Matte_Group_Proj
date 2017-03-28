@@ -2,13 +2,10 @@ import lxml
 import re # regexy 
 import sys
 import itertools
-import DDI_App.drugdict
+from DDI.drugdict import drugDict
+from DDI.parser_utils import *
 
-#python pml_analysis.py pmlfiles/drugs.pml           -> returns list of drugs
-#python pml_analysis.py pmlfiles/nodrugs.pml         -> outputs 'No drugs in PML file' to terminal 
-#python pml_analysis.py pmlfiles/error.pml_analysis  -> finds error and returns it
-
-lextokens = iter([])
+parsed = ""
 
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
             , (r'sequence[ \n\t{]'        , "SEQUENCE")
@@ -36,14 +33,75 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'[ \n\t]+'                , None)
             )
 
-tempList = []
 sys.tracebacklimit = None
+
+def findConsClash():
+    checkForClashes(clashes)
+    if not clashFinal:
+        print("No Construct name clashes in PML file.")
+        resetVars()
+    else:
+        for cname in clashes:
+             printClashes(cname)
+             resetVars()
+
+def checkForClashes(clashes):
+    for i in clashes:
+        for j in consRef:
+            if j[2] == i:
+                clashFinal.append(j)
+
+def printClashes(cname):
+    print("Construct name clash occured : Name -> " + cname)
+    for i in clashFinal:
+        ctype = i[0]
+        ln = i[3]
+        print("Construct Type -> " + ctype + " : Line number -> " + str(ln) +".")
+
+def getConsDeets(f):
+    ct = f.read()
+    parsed = parse(ct)
+    print(consRef)
+    resetLN()
+    resetVars()
+
+def findTaskUsed():
+    if not taskCheck:
+        print("Task construct not used in PML file.")
+    else:
+        print("Task construct is now deprecated, please use Sequence in its place.")
+        if len(taskCheck) > 1:
+            print("Task was used at lines ")
+            for i in taskCheck:
+                print([i][1]) 
+                print(" ")
+        else:
+            print("Task was used at line " + str(taskCheck[0][1]) + ".")
+    resetVars()
+
+def run(f):
+    contents = f.read()
+    parsed = parse(contents)
+    drugsLi = findDrugs(tempList)
+    resetVars()
+    output(drugsLi)
+
+def findUnnamedC():
+    resetVars()
+    return parsed
 
 def parse(data):
     global lextokens
     lextokens =lexer(data, LEXTOKENS)
     par =parseProc()
     return par
+
+def findDrugs(list):
+    drugList = []
+    for i in list: 
+        if i in drugDict.keys() and i not in drugList:
+            drugList.append(i)
+    return drugList
 
 def lexer(data, exprs):
     head =0
@@ -59,13 +117,6 @@ def lexer(data, exprs):
                 break
         else:
             raise ErrorReport('Error char -> "%s"\n' % data[head]) 
-
-def findDrugs(list):
-    drugList = []
-    for i in list: 
-        if i in drugDict.keys() and i not in drugList:
-            drugList.append(i)
-    return drugList
 
 def addToken(value):
     global lextokens
@@ -89,8 +140,7 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        print('Expecting %s %s Name, but received "%s"\n' % (const_name,tag,dat))
-        return -1
+        raise ErrorReport('Unnamed Construct found : Construct type -> "%s" : Line Number -> "%s" : Expecting -> "%s" Name, Received -> "%s".\n' % (const_name,lineNum,tag,dat))
     return dat
 
 def error_with_message(curr_location):
@@ -98,14 +148,15 @@ def error_with_message(curr_location):
     raise ErrorReport('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
-    check = lookahead_f("PROCESS", "Process")
-    if check == -1:
-        return -1
+    lookahead_f("PROCESS", "Process")
     idt = lookahead_f("ID","Process")
-    if idt == -1:
-        return -1
+    checkClashes(consNames, idt)
+    consNames.append(idt)
+    tup = ("Process", procCnt, idt, lineNum)
+    consRef.append(tup)
+    incProcCnt()
     ps = utilFuncLi(getPrimitive)
-    r = { "actions": ps, "name": idt }
+    r = { "actions": ps, "process name": idt }
     return r
 
 def getPrimitive():
@@ -124,11 +175,21 @@ def getPrimitive():
     else:
         error_with_message("construct error")
 
-def flow(cnFlow):
-    c = { "flow": cnFlow }
+def flow(construct):
+    if construct == "task":
+        x = ("task", lineNum)
+        taskCheck.append(x)
+    c = { "construct type": construct }
+
     ident = lookahead("ID")
+    checkClashes(consNames, ident)
+    consNames.append(ident)
+    consCnt = incConsCnt(construct)
+    tup = (construct, consCnt, ident, lineNum)
+    consRef.append(tup)
+
     if ident:
-        c["name"] = ident
+        c["construct name"] = ident
     c["actions"] = utilFuncLi(getPrimitive)
     return c
 
@@ -139,11 +200,22 @@ def action():
     elif lookahead("EXECUTABLE"):
         t = "executable"
     else:
-        t = ""
-    a = { "name": idt, "cflow": "action", "type" : t}
+        t = "not specified"
+
+    checkClashes(consNames, idt)
+    consNames.append(idt)
+    tup = ("action", actCnt, idt, lineNum)
+    consRef.append(tup)
+    incActCnt()
+    
+    a = { "action name": idt, "construct type": "action", "action type" : t}
     for (ty, dat) in utilFuncLi(parseType):
         a[ty] = dat
     return a
+
+def checkClashes(nmLi, name):
+    if name in consNames and name not in clashes:
+        clashes.append(name)
 
 def parseType():
     basType = None
@@ -159,7 +231,8 @@ def parseType():
         basType = "requires"
     else:
         error_with_message("basic type error")
-    lookahead_f("LEFTBRACKET", "lb")
+    x = lookahead_f("LEFTBRACKET", "lb")
+    incLineNum()
     if basType in ["provides", "requires", "agent"]:
         p = parseEx()
     else:
@@ -169,26 +242,26 @@ def parseType():
     return r
 
 def compExpr():
-    r = {"left": valueEx()}
+    r = {"left": constDesc()}
     rel = lookahead("COMPARE")
     if rel:
         r['rel'] = rel
-        r['right'] = valueEx()
+        r['right'] = constDesc()
     return r
 
-def valueEx():
-    attrCheck = lookahead("NUM") or lookahead("STRING")
-    if attrCheck:
-        attrCheck = attrCheck[1:-1]
-        tempList.append(attrCheck)
-        return {"attr": attrCheck}
+def constDesc():
+    descripCheck = lookahead("NUM") or lookahead("STRING")
+    if descripCheck:
+        descripCheck = descripCheck[1:-1]
+        tempList.append(descripCheck)
+        return {"description": descripCheck}
     idt = lookahead("ID")
     if idt:
-        t = {"attr":idt}
+        t = {"description":idt}
         if lookahead("POINT"):
             t['n_id'] = lookahead_f("ID","val expr")
         return t
-    error_with_message("Expr")
+    error_with_message("description")
 
 def parseEx():
     a =[compExpr()]
@@ -202,9 +275,11 @@ def parseEx():
 
 def utilFuncLi(par):
     items = []
-    lookahead_f("LEFTBRACKET", "lb")
+    check = lookahead_f("LEFTBRACKET", "lb")
+    incLineNum()
     while not lookahead("RIGHTBRACKET"):
         items.append(par())
+    incLineNum()
     return items
 
 def containsDrugs(list):
@@ -220,17 +295,100 @@ def output(list):
     else:
         print('No drugs in PML file')
 
+def resetVars():
+    del consNames[:]
+    del descrLi[:]
+    del consRef[:]
+    del taskCheck[:]
+    del clashes[:]
+    del clashFinal[:]
+    resetLN()
+    resetTskCnt()
+    resetSelCnt()
+    resetBchCnt()
+    resetItrCnt()
+    resetActCnt()
+
+def incConsCnt(consType):
+    if consType == "sequence":
+        x = seqCnt
+        incSeqCnt()
+    elif consType == "task":
+        x = taskCnt
+        incTaskCnt() 
+    elif consType == "selection":
+        x = selCnt 
+        incSelCnt()
+    elif consType == "branch":
+        x = branchCnt 
+        incBranchCnt()
+    elif consType == "iteration":
+        x = iterCnt 
+        incIterCnt()
+    return x
+
+def incActCnt():
+    global actCnt
+    actCnt += 1
+
+def incProcCnt():
+    global procCnt
+    procCnt += 1
+
+def incSeqCnt():
+    global seqCnt
+    seqCnt += 1
+
+def incSelCnt():
+    global selCnt
+    selCnt += 1
+
+def incTaskCnt():
+    global taskCnt
+    taskCnt += 1
+
+def incBranchCnt():
+    global branchCnt
+    branchCnt += 1
+
+def incIterCnt():
+    global iterCnt 
+    iterCnt += 1
+
+def incLineNum():
+    global lineNum
+    lineNum += 1
+
+def incLineNum():
+    global lineNum
+    lineNum += 1
+
+def resetLN():
+    global lineNum
+    lineNum=1
+
+def resetTskCnt():
+    global taskCnt
+    taskCnt = 1
+
+def resetSelCnt():
+    global selCnt
+    selCnt = 1
+
+def resetBchCnt():
+    global branchCnt
+    branchCnt = 1
+
+def resetItrCnt():
+    global iterCnt
+    iterCnt = 1
+
+def resetActCnt():
+    global actCnt
+    actCnt = 1
+
 class ErrorReport(Exception):pass
 
-def run(f):
-    contents = f.read()
-    parsed = parse(contents)
-    drugsLi = findDrugs(tempList)
-    output(drugsLi)
 
-def runParser(f):
-    ct = f.read()
-    parsed = parse(ct)
-    #print(parsed)
-    print("No errors found")
-    return "No errors found."
+
+

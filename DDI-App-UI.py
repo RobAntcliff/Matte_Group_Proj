@@ -26,7 +26,7 @@ def loadPMLFile():
 				"\n  5:  for nodrugs.pml"+
 				"\n  6:  for branch.pml"+
 				"\n  7:  for clash1.pml"+
-				"\n  8:  for nonames.pml"+
+				"\n  8:  for noname.pml"+
 				"\n  return:  to return to main menu\n"+
 				"\n\nEnter your choice here: ")
 	

@@ -83,6 +83,9 @@ def run(f):
     resetVars()
     contents = f.read()
     parsed = parse(contents)
+    drugsLi = findDrugs(tempList)
+    output(drugsLi)
+    return drugsLi
 
 def parse(data):
     global lextokens

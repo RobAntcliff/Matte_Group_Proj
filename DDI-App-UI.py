@@ -68,7 +68,7 @@ def loadPMLFile():
 			entered = " "
 
 	initLogFile(path)
-	run(open(path, 'r'))
+	drugArr = run(open(path, 'r'))
 	runCheck()
 
 	global drug_list

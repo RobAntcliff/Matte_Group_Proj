@@ -26,6 +26,7 @@ def loadPMLFile():
 				"\n  5:  for nodrugs.pml"+
 				"\n  6:  for branch.pml"+
 				"\n  7:  for clash1.pml"+
+				"\n  8:  for nonames.pml"+
 				"\n  return:  to return to main menu\n"+
 				"\n\nEnter your choice here: ")
 	
@@ -54,7 +55,10 @@ def loadPMLFile():
 
 		elif entered == "7":
 			path = "DDI/pmlfiles/clash1.pml"
-
+		
+		elif entered == "8":
+			path = "DDI/pmlfiles/nonames.pml"
+		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")
 			return

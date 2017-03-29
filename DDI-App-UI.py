@@ -7,6 +7,7 @@ from DDI.utils import *
 from DDI.parser_utils import *
 
 commands = {}
+drug_list = []
 running = True
 path = " "
 mock = " "
@@ -69,6 +70,9 @@ def loadPMLFile():
 	initLogFile(path)
 	run(open(path, 'r'))
 	runCheck()
+
+	global drug_list
+	drug_list = getDrugs()
 	
 
 def loadMock():
@@ -121,7 +125,6 @@ def runCheck():
 			check_results_str = check_results.decode("utf-8")
 			print("\n    The PML file " +str(path) + " is being checked.\n")
 			findTaskUsed()
-			findUnnamedC()
 			findConsClash()
 			updateLogFile(path, "\nCheck performed. Report is as follows.\n")
 

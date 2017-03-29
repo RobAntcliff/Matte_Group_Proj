@@ -39,11 +39,11 @@ def findConsClash():
     checkForClashes(clashes)
     if not clashFinal:
         print("No Construct name clashes in PML file.")
-        resetVars()
+        #resetVars()
     else:
         for cname in clashes:
              printClashes(cname)
-             resetVars()
+             #resetVars()
 
 def checkForClashes(clashes):
     for i in clashes:
@@ -77,24 +77,21 @@ def findTaskUsed():
                 print(" ")
         else:
             print("Task was used at line " + str(taskCheck[0][1]) + ".")
-    resetVars()
+    #resetVars()
 
 def run(f):
+    resetVars()
     contents = f.read()
     parsed = parse(contents)
-    drugsLi = findDrugs(tempList)
-    resetVars()
-    output(drugsLi)
-
-def findUnnamedC():
-    resetVars()
-    return parsed
 
 def parse(data):
     global lextokens
     lextokens =lexer(data, LEXTOKENS)
     par =parseProc()
     return par
+
+def getDrugs():
+    return findDrugs(tempList)
 
 def findDrugs(list):
     drugList = []

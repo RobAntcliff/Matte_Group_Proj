@@ -7,6 +7,8 @@ from DDI.utils import *
 from DDI.parser_utils import *
 
 commands = {}
+drug_list = []
+ddi = []
 running = True
 path = " "
 mock = " "
@@ -23,9 +25,9 @@ def loadPMLFile():
 				"\n  2:  for Lab_Assessment.pml"+
 				"\n  3:  for drugs.pml"+
 				"\n  4:  for error.pml"+
-				"\n  5:  for nodrugs.pml"+
+				"\n  5:  for clash1.pml"+
 				"\n  6:  for branch.pml"+
-				"\n  7:  for clash1.pml"+
+				"\n  7:  for nodrugs.pml"+
 				"\n  8:  for noname.pml"+
 				"\n  return:  to return to main menu\n"+
 				"\n\nEnter your choice here: ")
@@ -48,16 +50,16 @@ def loadPMLFile():
 			path = "DDI/pmlfiles/error.pml"
 	
 		elif entered == "5":
-			path = "DDI/pmlfiles/nodrugs.pml"
+			path = "DDI/pmlfiles/clash1.pml"
 
 		elif entered == "6":
 			path = "DDI/pmlfiles/branch.pml"
 
 		elif entered == "7":
-			path = "DDI/pmlfiles/clash1.pml"
+			path = "DDI/pmlfiles/nodrugs.pml"
 		
 		elif entered == "8":
-			path = "DDI/pmlfiles/nonames.pml"
+			path = "DDI/pmlfiles/noname.pml"
 		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")
@@ -67,8 +69,12 @@ def loadPMLFile():
 			entered = " "
 
 	initLogFile(path)
-	run(open(path, 'r'))
+	drugLi = run(open(path, 'r'))
 	runCheck()
+
+	global drug_list
+	drug_list = getDrugs()
+	print(drug_list)
 	
 
 def loadMock():
@@ -121,7 +127,6 @@ def runCheck():
 			check_results_str = "TODO: Errors & Warnings should go here" #check_results.decode("utf-8")
 			print("\n    The PML file " +str(path) + " is being checked.\n")
 			findTaskUsed()
-			findUnnamedC()
 			findConsClash()
 			updateLogFile(path, "\nCheck performed. Report is as follows.\n")
 
@@ -129,24 +134,53 @@ def runCheck():
 			check_results_str = "\nCheck performed: The following errors were found in the selected PML file: Invalid Syntax\n"+e.output
 		updateLogFile(path, check_results_str)
 
-def readMock():
+def ddiCheck():
 	global mock
-	mockread = ""
+	global path
+	global ddi
+	i = 0
+
+	mockread = "The mock will now be displayed below in the form:\n     -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \nBelow are the contents of your chosen mock DDI file:\n"
+
 	if mock == " ":
 		print("\n    WARNING: No mock DINTO file has been selected. Please load a file and try again\n")
 		return
-
-	else:
-		print("\nThe mock will now be displayed below in the form:\n"+
-                      "\n    -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \n"+
-                      "\nBelow are the contents of your chosen mock DDI file:\n")
+	elif path == " ":
+		print("\n    WARNING: No PML file has been selected. Please load a file and try again\n")
+		return
+	else: 
 		with open(mock) as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
-				mockread += str("     " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
-	
-	print(mockread)
-	updateLogFile(mock, mockread)
+				mockread += str("        " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
+		
+		updateLogFile(mock, mockread)
+
+		if(len(drug_list) > 1):
+			for x in drug_list:
+				with open(mock) as csvfile:
+					reader = csv.DictReader(csvfile)
+					for row in reader:	
+						if(row['Drug 1'] == x):
+							for y in drug_list:
+								if(y != x):
+									if(row['Drug 2'] == y):
+										ddi += [(x, y, row['DDI Type'], row['Time'], row['Unit'])]		
+
+		elif (len(drug_list) == 1):
+			print("\nThere is only one drug in the PML file, no need to check for any drug interactions\n")
+			return
+		else:
+			print("\nThere is no drugs in the PML file.\n")
+			return
+
+	if(len(ddi) != 0):
+		print("\n    Here are all the DDIs that were identified:\n")
+		for x in ddi:
+			print("\n    Here: {0}".format(x))
+	else:
+		print("\n    There are no DDIs in this PMLs.\n")
+	#updateLogFile(mock, ddi)
 
 
 def loadOwl():
@@ -164,7 +198,7 @@ def printHelp():
 		"\n  load pml:  to load a PML file to be worked with"+
 		"\n  load owl:  to load an OWL ontology and find a specific class within it"+
 		"\n  load mock:  to load a mock DINTO file to be used to identify DDIs"+
-		"\n  read mock:  to read the loaded mock DINTO file"+
+		"\n  ddi check:  to search the loaded mock DINTO file for any DDIs related to drugs from the loaded PML file"+
 		"\n  quit:  to close the application\n")
 
 
@@ -176,7 +210,7 @@ commands = {"help"         : printHelp,
             "quit"         : exitApplication,
 	    	"load pml"     : loadPMLFile,
 		"load mock" : loadMock,
-		"read mock" : readMock
+		"ddi check" : ddiCheck
 	    	}
 print("\n\n------------------------------------------------------\n"+
       "\nApplication started, see available commands below:")

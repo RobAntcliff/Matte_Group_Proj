@@ -24,9 +24,9 @@ def loadPMLFile():
 				"\n  2:  for Lab_Assessment.pml"+
 				"\n  3:  for drugs.pml"+
 				"\n  4:  for error.pml"+
-				"\n  5:  for nodrugs.pml"+
+				"\n  5:  for clash1.pml"+
 				"\n  6:  for branch.pml"+
-				"\n  7:  for clash1.pml"+
+				"\n  7:  for nodrugs.pml"+
 				"\n  8:  for noname.pml"+
 				"\n  return:  to return to main menu\n"+
 				"\n\nEnter your choice here: ")
@@ -49,16 +49,16 @@ def loadPMLFile():
 			path = "DDI/pmlfiles/error.pml"
 	
 		elif entered == "5":
-			path = "DDI/pmlfiles/nodrugs.pml"
+			path = "DDI/pmlfiles/clash1.pml"
 
 		elif entered == "6":
 			path = "DDI/pmlfiles/branch.pml"
 
 		elif entered == "7":
-			path = "DDI/pmlfiles/clash1.pml"
+			path = "DDI/pmlfiles/nodrugs.pml"
 		
 		elif entered == "8":
-			path = "DDI/pmlfiles/nonames.pml"
+			path = "DDI/pmlfiles/noname.pml"
 		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")
@@ -68,7 +68,8 @@ def loadPMLFile():
 			entered = " "
 
 	initLogFile(path)
-	drugArr = run(open(path, 'r'))
+	drugLi = run(open(path, 'r'))
+	#print(drugLi)
 	runCheck()
 
 	global drug_list

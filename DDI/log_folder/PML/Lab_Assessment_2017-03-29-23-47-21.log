@@ -1,0 +1,12 @@
+2017-03-29-23-47-21: Lab_Assessment.pml was selected for use.
+
+2017-03-29-23-47-21: 
+2017-03-29-23-47-21: Check performed. Report is as follows.
+2017-03-29-23-47-21: 
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:4: action 'PresentToSpecialistLab' provides but does not require 'test_plan'
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:8: action 'PrepareTests' provides but does not require 'test_suite'
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:3: symptoms in action 'PresentToSpecialistLab' is unprovided
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:11: examination_results in action 'RunTests' is unprovided
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:12: diagnosis in action 'RunTests' is unprovided
+2017-03-29-23-47-21: DDI/pmlfiles/Lab_Assessment.pml:13: diagnosis in action 'RunTests' is not consumed
+2017-03-29-23-47-21: 

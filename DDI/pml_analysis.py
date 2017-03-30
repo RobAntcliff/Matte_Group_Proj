@@ -39,20 +39,19 @@ def findConsClash():
     checkForClashes(clashes)
     if not clashFinal:
         print("No Construct name clashes in PML file.")
-        #resetVars()
     else:
         for cname in clashes:
-             printClashes(cname)
-             #resetVars()
+            printClashes(cname)
+
 
 def checkForClashes(clashes):
     for i in clashes:
         for j in consRef:
-            if j[2] == i:
+            if j[2] == i and str(i) != 'False':
                 clashFinal.append(j)
 
 def printClashes(cname):
-    print("Construct name clash occured : Name -> " + cname)
+    print("Construct name clash occured : Name -> " + str(cname))
     for i in clashFinal:
         ctype = i[0]
         ln = i[3]
@@ -62,8 +61,6 @@ def getConsDeets(f):
     ct = f.read()
     parsed = parse(ct)
     print(consRef)
-    resetLN()
-    resetVars()
 
 def findTaskUsed():
     if not taskCheck:
@@ -77,14 +74,12 @@ def findTaskUsed():
                 print(" ")
         else:
             print("Task was used at line " + str(taskCheck[0][1]) + ".")
-    #resetVars()
 
 def run(f):
     resetVars()
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
-    output(drugsLi)
     return drugsLi
 
 def parse(data):

@@ -21,6 +21,8 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'requires'                , "REQUIRES")
             , (r'provides'                , "PROVIDES")
             , (r'tool'                    , "TOOL")
+            , (r'time'                    , "TIME")
+            , (r'frequency'               , "FREQUENCY")
             , (r'[_A-Za-z][_A-Za-z0-9]*'  , "ID")
             , (r'\.'                      , "POINT")
             , (r'[0-9]+'                  , "NUM")
@@ -229,6 +231,10 @@ def parseType():
         basType = "provides"
     elif lookahead("REQUIRES"):
         basType = "requires"
+    elif lookahead("TIME"):
+        basType = "time"
+    elif lookahead("FREQUENCY"):
+        basType = "frequency"
     else:
         error_with_message("basic type error")
     x = lookahead_f("LEFTBRACKET", "lb")

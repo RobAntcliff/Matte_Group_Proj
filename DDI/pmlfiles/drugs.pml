@@ -17,7 +17,9 @@ process testing {
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }
-      requires { "bupropion" }  
+      requires { "bupropion" }
+      time { "8pm" }
+      frequency { "daily" }  
       provides { "remedy" }
     }
 }

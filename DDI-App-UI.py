@@ -116,9 +116,9 @@ def runCheck():
 		return
 	else:
 		try:
-			pml_check = 'DDI/Check/pmlcheck'
-			check_results = subprocess.check_output([pml_check, path])
-			check_results_str = check_results.decode("utf-8")
+			#pml_check = 'DDI/Check/pmlcheck'
+			#check_results = subprocess.check_output([pml_check, path])
+			check_results_str = "TODO: Errors & Warnings should go here" #check_results.decode("utf-8")
 			print("\n    The PML file " +str(path) + " is being checked.\n")
 			findTaskUsed()
 			findUnnamedC()

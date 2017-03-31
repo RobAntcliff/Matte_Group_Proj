@@ -81,11 +81,10 @@ def printDrugs():
 	if not drug_list:
 		print("No drugs in PML File")
 	elif len(drug_list) == 1:
-		print("The drug " + str(drug_list[0]) + " was found in PML File")
+		print("Drug found in PML File -> " + drug_list[0])
 	else: 
-		print("The following drugs were found in PML File: ")
 		for i in range(len(drug_list)):
-			print(drug_list[i])
+			print("Drug found in PML File -> " + drug_list[i])
 
 
 def printErrors():

@@ -306,6 +306,7 @@ def resetVars():
     del clashes[:]
     del clashFinal[:]
     del errList[:]
+    del tempList[:]
     resetLN()
     resetTskCnt()
     resetSelCnt()

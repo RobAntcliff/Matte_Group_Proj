@@ -59,7 +59,7 @@ def loadPMLFile():
 			path = "DDI/pmlfiles/nodrugs.pml"
 		
 		elif entered == "8":
-			path = "DDI/pmlfiles/noname.pml"
+			path = "DDI/pmlfiles/nonames.pml"
 		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")
@@ -69,12 +69,33 @@ def loadPMLFile():
 			entered = " "
 
 	initLogFile(path)
-	drugLi = run(open(path, 'r'))
-	runCheck()
+	global error_li
+	error_li = run(open(path, 'r'))
 
 	global drug_list
 	drug_list = getDrugs()
-	print(drug_list)
+	runCheck()
+
+
+def printDrugs():
+	if not drug_list:
+		print("No drugs in PML File")
+	elif len(drug_list) == 1:
+		print("The drug " + str(drug_list[0]) + " was found in PML File")
+	else: 
+		print("The following drugs were found in PML File: ")
+		for i in range(len(drug_list)):
+			print(drug_list[i])
+
+
+def printErrors():
+	if not error_li:
+		print("No errors in PML File")
+	elif len(error_li) == 1:
+		print("Error Report :: " + str(error_li[0]))
+	else:
+		for i in range(len(error_li)):
+			print("Error Report :: " + str(error_li[i]))
 	
 
 def loadMock():
@@ -121,18 +142,12 @@ def runCheck():
 		printHelp
 		return
 	else:
-		try:
-			#pml_check = 'DDI/Check/pmlcheck'
-			#check_results = subprocess.check_output([pml_check, path])
-			check_results_str = "TODO: Errors & Warnings should go here" #check_results.decode("utf-8")
-			print("\n    The PML file " +str(path) + " is being checked.\n")
-			findTaskUsed()
-			findConsClash()
-			updateLogFile(path, "\nCheck performed. Report is as follows.\n")
-
-		except subprocess.CalledProcessError as e:
-			check_results_str = "\nCheck performed: The following errors were found in the selected PML file: Invalid Syntax\n"+e.output
-		updateLogFile(path, check_results_str)
+		print("\n    The PML file " +str(path) + " is being checked.\n")
+		printErrors()
+		printDrugs()
+		findTaskUsed()
+		findConsClash()
+		updateLogFile(path, "\nCheck performed. Report is as follows.\n")
 
 def ddiCheck():
 	global mock

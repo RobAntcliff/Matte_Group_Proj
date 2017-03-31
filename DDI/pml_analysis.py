@@ -82,7 +82,7 @@ def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
-    return drugsLi
+    return errList
 
 def parse(data):
     global lextokens
@@ -137,8 +137,10 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-        raise ErrorReport('Unnamed Construct found : Construct type -> "%s" : Line Number -> "%s" : Expecting -> "%s" Name, Received -> "%s".\n' % (const_name,lineNum,tag,dat))
+    	err_str = "Unnamed Construct found : Construct type -> " + str(const_name) + " : Line Number -> " +  str(lineNum) + " : Expecting -> Name, Received -> " + str(dat)
+    	errList.append(err_str)
     return dat
+    
 
 def error_with_message(curr_location):
     (dat, t) = nextTok()
@@ -303,6 +305,7 @@ def resetVars():
     del taskCheck[:]
     del clashes[:]
     del clashFinal[:]
+    del errList[:]
     resetLN()
     resetTskCnt()
     resetSelCnt()

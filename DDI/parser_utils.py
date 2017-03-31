@@ -10,6 +10,7 @@ lineNum =1
 lexCount = 0
 constructDict = {}
 descrLi =[]
+errList = []
 tempList = []
 constructLi = []
 consRef=[]

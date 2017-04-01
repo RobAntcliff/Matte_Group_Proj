@@ -45,7 +45,6 @@ def findConsClash():
         for cname in clashes:
             printClashes(cname)
 
-
 def checkForClashes(clashes):
     for i in clashes:
         for j in consRef:
@@ -65,17 +64,7 @@ def getConsDeets(f):
     print(consRef)
 
 def findTaskUsed():
-    if not taskCheck:
-        print("Task construct not used in PML file.")
-    else:
-        print("Task construct is now deprecated, please use Sequence in its place.")
-        if len(taskCheck) > 1:
-            print("Task was used at lines ")
-            for i in taskCheck:
-                print([i][1]) 
-                print(" ")
-        else:
-            print("Task was used at line " + str(taskCheck[0][1]) + ".")
+    return taskCheck
 
 def run(f):
     resetVars()
@@ -137,14 +126,15 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-    	err_str = "Unnamed Construct found : Construct type -> " + str(const_name) + " : Line Number -> " +  str(lineNum) + " : Expecting -> Name, Received -> " + str(dat)
+    	err_str = "Type -> " + str(const_name) + " : Line Number -> " +  str(lineNum) + " : Expecting -> " + str(tag) + ", Received -> " + str(dat)
     	errList.append(err_str)
     return dat
     
-
 def error_with_message(curr_location):
     (dat, t) = nextTok()
-    raise ErrorReport('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
+    err_str = "Unexpected " + str(t) + "(" + str(dat) + ") parsed " + str(curr_location)
+    errList.append(err_str)
+    print('Unexpected %s ("%s") parsed %s'%(t, dat, curr_location))
 
 def parseProc():
     lookahead_f("PROCESS", "Process")
@@ -172,7 +162,7 @@ def getPrimitive():
     elif lookahead("TASK"):
         return flow("task")
     else:
-        error_with_message("construct error")
+        (dat, t) = nextTok()
 
 def flow(construct):
     if construct == "task":
@@ -232,15 +222,14 @@ def parseType():
         basType = "time"
     elif lookahead("FREQUENCY"):
         basType = "frequency"
-    else:
-        error_with_message("basic type error")
-    x = lookahead_f("LEFTBRACKET", "lb")
+
+    x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
     if basType in ["provides", "requires", "agent"]:
         p = parseEx()
     else:
-        p = lookahead_f("STRING", "str")
-    lookahead_f("RIGHTBRACKET", "rb")
+        p = lookahead_f("STRING", "String")
+    lookahead_f("RIGHTBRACKET", "Right Bracket")
     r = (basType, p)
     return r
 
@@ -264,7 +253,6 @@ def constDesc():
         if lookahead("POINT"):
             t['n_id'] = lookahead_f("ID","val expr")
         return t
-    error_with_message("description")
 
 def parseEx():
     a =[compExpr()]
@@ -278,7 +266,7 @@ def parseEx():
 
 def utilFuncLi(par):
     items = []
-    check = lookahead_f("LEFTBRACKET", "lb")
+    check = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
     while not lookahead("RIGHTBRACKET"):
         items.append(par())

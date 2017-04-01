@@ -59,7 +59,7 @@ def loadPMLFile():
 			path = "DDI/pmlfiles/nodrugs.pml"
 		
 		elif entered == "8":
-			path = "DDI/pmlfiles/nonames.pml"
+			path = "DDI/pmlfiles/noname.pml"
 		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")
@@ -74,8 +74,23 @@ def loadPMLFile():
 
 	global drug_list
 	drug_list = getDrugs()
+
+	global task_list 
+	task_list = findTaskUsed()
 	runCheck()
 
+def printTasks():
+	if not task_list:
+		print("Task construct not used in PML file.")
+	else:
+		print("Task construct is now deprecated, please use Sequence in its place.")
+		if len(task_list) > 1:
+			print("Task was used at lines ")
+			for i in task_list:
+				print([i][1]) 
+				print(" ")
+			else:
+				print("Task was used at line " + str(task_list[0][1]) + ".")
 
 def printDrugs():
 	if not drug_list:
@@ -86,7 +101,6 @@ def printDrugs():
 		for i in range(len(drug_list)):
 			print("Drug found in PML File -> " + drug_list[i])
 
-
 def printErrors():
 	if not error_li:
 		print("No errors in PML File")
@@ -96,7 +110,6 @@ def printErrors():
 		for i in range(len(error_li)):
 			print("Error Report :: " + str(error_li[i]))
 	
-
 def loadMock():
 	global mock
 	usr_input = " "
@@ -144,8 +157,8 @@ def runCheck():
 		print("\n    The PML file " +str(path) + " is being checked.\n")
 		printErrors()
 		printDrugs()
-		findTaskUsed()
 		findConsClash()
+		printTasks()
 		updateLogFile(path, "\nCheck performed. Report is as follows.\n")
 
 def ddiCheck():

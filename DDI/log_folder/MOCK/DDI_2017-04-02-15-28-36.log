@@ -1,0 +1,13 @@
+2017-04-02-15-28-36: DDI.csv was selected for use.
+
+2017-04-02-15-28-51: The mock will now be displayed below in the form:
+2017-04-02-15-28-51:      -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- 
+2017-04-02-15-28-51: Below are the contents of the chosen mock DDI file:
+2017-04-02-15-28-51:         coke - pepsi - bad - 5 - sec
+2017-04-02-15-28-51:         coke - 7up - bad - 2 - min
+2017-04-02-15-28-51:         pepsi - flat7up - good - 3 - hr
+2017-04-02-15-28-51:         paracetamol - alcohol - good - 1 - day
+2017-04-02-15-28-51:         caffeine - alcohol - bad - 1 - week
+2017-04-02-15-28-51:         coke - alcohol - good - 52 - week
+2017-04-02-15-28-51:         capecitabine - bupropion - bad - 2 - hr
+2017-04-02-15-28-51: 

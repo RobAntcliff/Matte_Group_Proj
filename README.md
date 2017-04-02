@@ -72,6 +72,8 @@ The group project repository for team Matte
 ##### Specify Delay
 ##### Merging Clinical Pathways written in PML
 ##### PML-TX Save PML to File
+>Upon loading a file, a backup is saved to the New_Pathways folder in the Matte_Group_Proj folder.
+>This is simply for testing until the merge feature has been completed.
  ---
 
 ### Credit

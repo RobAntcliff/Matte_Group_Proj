@@ -2,6 +2,7 @@ import subprocess
 import sys
 import csv
 
+from DDI.pmlTX import *
 from DDI.pml_analysis import *
 from DDI.utils import *
 from DDI.parser_utils import *
@@ -72,12 +73,13 @@ def loadPMLFile():
 	global error_li
 	error_li = run(open(path, 'r'))
 
-	global drug_list
-	drug_list = getDrugs()
-
-	global task_list 
+	global task_list
 	task_list = findTaskUsed()
 	runCheck()
+
+	global drug_list
+	drug_list = getDrugs()
+	printDrugs()
 
 def printTasks():
 	if not task_list:
@@ -115,7 +117,7 @@ def loadMock():
 	usr_input = " "
 
 	while usr_input == " ":
-		usr_input = input("\nTo select a mock DINTO file ente"+
+		usr_input = input("\nTo select a mock DINTO file.\n\nEnter:"+
 				  "\n  1:  if you wish to use your own mock DINTO file"+
 				  "\n\nOr enter to choose from our selection of mock DINTO files"+
 				  "\n  2:  for DDI.csv"+
@@ -154,12 +156,15 @@ def runCheck():
 		printHelp
 		return
 	else:
-		print("\n    The PML file " +str(path) + " is being checked.\n")
+		print("\n    The PML file " +str(path) + " is being checked.\n"+
+		      "\nCheck performed. Report is as follows:\n")
+		updateLogFile(path, "\nCheck performed. Report is as follows:\n")
 		printErrors()
-		printDrugs()
 		findConsClash()
 		printTasks()
-		updateLogFile(path, "\nCheck performed. Report is as follows.\n")
+		savePMLFile(getFileName(path)[:-4]+"_backup", open(path, 'r').read())
+		print("\nA backup version of the selected file has been saved in the New_Pathways folder:\n"+
+		      "    Matte_Group_Proj -> New_Pathways -> your_file_backup.pml\n")
 
 def ddiCheck():
 	global mock
@@ -167,7 +172,7 @@ def ddiCheck():
 	global ddi
 	i = 0
 
-	mockread = "The mock will now be displayed below in the form:\n     -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \nBelow are the contents of your chosen mock DDI file:\n"
+	mockread = ""
 
 	if mock == " ":
 		print("\n    WARNING: No mock DINTO file has been selected. Please load a file and try again\n")
@@ -176,12 +181,14 @@ def ddiCheck():
 		print("\n    WARNING: No PML file has been selected. Please load a file and try again\n")
 		return
 	else: 
+		mockread = "\n\nThe mock will now be displayed below in the form:\n     -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \nBelow are the contents of the chosen mock DDI file:\n"
 		with open(mock) as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
 				mockread += str("        " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
 		
 		updateLogFile(mock, mockread)
+		print(mockread)
 
 		if(len(drug_list) > 1):
 			for x in drug_list:

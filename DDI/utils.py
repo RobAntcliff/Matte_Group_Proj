@@ -14,6 +14,11 @@ def getLogLocation(path):
 	elif fileType == "pml":
 		return "PML/"
 
+def getFileName(path):
+	path_split = path.split('/')
+	name = path_split[len(path_split)-1]
+	return name
+
 def replaceNewLineWithTimestamp(content, timestamp):
 	content_list = content.split('\n')
 	new_content = ""
@@ -22,8 +27,7 @@ def replaceNewLineWithTimestamp(content, timestamp):
 	return new_content
 
 def initLogFile(path):
-	path_split = path.split("/")
-	fileName = path_split[len(path_split)-1]
+	fileName = getFileName(path)
 	current_time = time.strftime("%Y-%m-%d-%H-%M-%S")
 	logFileName = fileName[:-4] + '_' + current_time + '.log'
 

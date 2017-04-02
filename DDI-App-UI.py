@@ -81,6 +81,10 @@ def loadPMLFile():
 	drug_list = getDrugs()
 	printDrugs()
 
+	global all_list
+	all_list = getDrugsTimeAndFrequency()
+	printDrugsFrequencyAndTime()
+
 def printTasks():
 	if not task_list:
 		print("Task construct not used in PML file.")
@@ -103,6 +107,36 @@ def printDrugs():
 		print("\n")
 		for i in range(len(drug_list)):
 			print("Drug found in PML File -> " + drug_list[i])
+
+def printDrugsFrequencyAndTime():
+	if not all_list:
+		print("\nNo drugs in PML File\n")
+	elif len(all_list) == 1:
+		print("\nDrug found in PML File -> " + all_list[0])
+	else: 
+		print("\n")
+		for i in range(len(all_list)):
+			print("Drug found in PML File -> " + all_list[i])
+
+def printTime():
+	if not time_list:
+		print("\nNo time in PML File\n")
+	elif len(drug_list) == 1:
+		print("\nTime found in PML File -> " + time_list[0])
+	else: 
+		print("\n")
+		for i in range(len(time_list)):
+			print("Time found in PML File -> " + time_list[i])
+
+def printFreq():
+	if not freq_list:
+		print("\nNo freq in PML File\n")
+	elif len(drug_list) == 1:
+		print("\nfreq found in PML File -> " + freq_list[0])
+	else: 
+		print("\n")
+		for i in range(len(freq_list)):
+			print("Freq found in PML File -> " + freq_list[i])
 
 def printErrors():
 	if not error_li:

@@ -63,6 +63,8 @@ The group project repository for team Matte
 
 #### Release Two
 ##### Adding Time to PML
+1. To check for the syntax of the time in PML, go to DDI/pmlfiles/drugs.pml
+2. To check parsed out time in PML, run the DDI-App-UI.py -> load pml -> #3 drugs.pml
 ##### Mock DDI Characterisation Data
 1. New mock DDI Data can be found in the mockfiles folder in the directory /DDI/
 ##### Lookup Drugs in Mock

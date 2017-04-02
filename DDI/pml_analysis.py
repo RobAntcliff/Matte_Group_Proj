@@ -3,6 +3,8 @@ import re # regexy
 import sys
 import itertools
 from DDI.drugdict import drugDict
+from DDI.timedict import timeDict
+from DDI.freqdict import freqDict
 from DDI.parser_utils import *
 
 parsed = ""
@@ -82,11 +84,32 @@ def parse(data):
 def getDrugs():
     return findDrugs(tempList)
 
+def getDrugsTimeAndFrequency():
+    return findDrugsTimeAndFrequency(tempList)
+
 def findDrugs(list):
     drugList = []
     for i in list: 
         if i in drugDict.keys() and i not in drugList:
             drugList.append(i)
+    return drugList
+
+def neighborhood(iterable):
+    iterator = iter(iterable)
+    prev_item = None
+    current_item = next(iterator)  # throws StopIteration if empty.
+    for next_item in iterator:
+        yield (prev_item, current_item, next_item)
+        prev_item = current_item
+        current_item = next_item
+    yield (prev_item, current_item, None)
+
+def findDrugsTimeAndFrequency(list):
+    drugList = []
+
+    for prev,item,nextItem in neighborhood(list):
+        if prev in drugDict.keys() and prev not in drugList:
+            drugList.append("Drug: " + prev + ", Time: " + item + ", Freq: " + nextItem)
     return drugList
 
 def lexer(data, exprs):
@@ -225,7 +248,7 @@ def parseType():
 
     x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
-    if basType in ["provides", "requires", "agent"]:
+    if basType in ["provides", "requires", "agent", "time", "frequency"]:
         p = parseEx()
     else:
         p = lookahead_f("STRING", "String")
@@ -244,6 +267,7 @@ def compExpr():
 def constDesc():
     descripCheck = lookahead("NUM") or lookahead("STRING")
     if descripCheck:
+
         descripCheck = descripCheck[1:-1]
         tempList.append(descripCheck)
         return {"description": descripCheck}

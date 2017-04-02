@@ -83,34 +83,37 @@ def loadPMLFile():
 
 def printTasks():
 	if not task_list:
-		print("Task construct not used in PML file.")
+		print("Task construct not used in PML file.\n")
 	else:
-		print("Task construct is now deprecated, please use Sequence in its place.")
+		print("Task construct is now deprecated, please use Sequence in its place.\n\n")
 		if len(task_list) > 1:
 			print("Task was used at lines ")
 			for i in task_list:
 				print([i][1]) 
 				print(" ")
-			else:
-				print("Task was used at line " + str(task_list[0][1]) + ".")
+		else:
+			print("Task was used at line " + str(task_list[0][1]) + ".")
+		print("\n")
 
 def printDrugs():
 	if not drug_list:
-		print("No drugs in PML File")
+		print("\nNo drugs in PML File\n")
 	elif len(drug_list) == 1:
-		print("Drug found in PML File -> " + drug_list[0])
+		print("\nDrug found in PML File -> " + drug_list[0])
 	else: 
+		print("\n")
 		for i in range(len(drug_list)):
 			print("Drug found in PML File -> " + drug_list[i])
 
 def printErrors():
 	if not error_li:
-		print("No errors in PML File")
+		print("\nFile parsed.")
 	elif len(error_li) == 1:
-		print("Error Report :: " + str(error_li[0]))
+		print("\nError Report :: " + str(error_li[0]))
 	else:
+		print("\n")
 		for i in range(len(error_li)):
-			print("Error Report :: " + str(error_li[i]))
+			print("Error Report :: " + str(error_li[i])+"\n")
 	
 def loadMock():
 	global mock

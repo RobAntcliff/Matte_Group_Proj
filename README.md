@@ -79,12 +79,18 @@ The group project repository for team Matte
 ##### Report un-named PML construct
 1. This error is checked while parsing and will report unnamed constructs.
 2. If no such constructs exist, no report is printed.
+3. Run the app and select 'load pml'.
+4. Then select the noname.pml option to view the error message thrown.
 ##### Report PML construct name-clash
 1. This error is checked while parsing and will report constructs with the same name.
 2. If no such constructs exist the user is told on screen.
+3. Run the app and select 'load pml'.
+4. Then select the clash1.pml option to view the error message thrown.
 ##### Report use of task construct
 1. This error is checked while parsing and will report the use of task constructs.
 2. If no such constructs exist the user is informed through on screen print.
+3. Run the app and select 'load pml'.
+4. Then select the branch.pml option to view the error message thrown.
 ##### Specify Delay
 ##### Merging Clinical Pathways written in PML
 ##### PML-TX Save PML to File

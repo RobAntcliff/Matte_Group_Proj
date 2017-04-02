@@ -108,8 +108,9 @@ def findDrugsTimeAndFrequency(list):
     drugList = []
 
     for prev,item,nextItem in neighborhood(list):
-        if prev in drugDict.keys() and prev not in drugList:
-            drugList.append("Drug: " + prev + ", Time: " + item + ", Freq: " + nextItem)
+        if (prev is not None) and (item is not None) and (nextItem is not None):
+            if prev in drugDict.keys():
+                drugList.append("Drug: " + prev + ", Time: " + item + ", Freq: " + nextItem)
     return drugList
 
 def lexer(data, exprs):

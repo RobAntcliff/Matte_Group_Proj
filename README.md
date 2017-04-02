@@ -77,13 +77,19 @@ The group project repository for team Matte
 3. To test this feature, load drugs.pml and DDI.csv into the app and use this function. The app will report it found 
 >['capecitabine', 'bupropion', 'bad', '2', 'hr']
 ##### Report un-named PML construct
+1. This error is checked while parsing and will report unnamed constructs.
+2. If no such constructs exist, no report is printed.
 ##### Report PML construct name-clash
+1. This error is checked while parsing and will report constructs with the same name.
+2. If no such constructs exist the user is told on screen.
 ##### Report use of task construct
+1. This error is checked while parsing and will report the use of task constructs.
+2. If no such constructs exist the user is informed through on screen print.
 ##### Specify Delay
 ##### Merging Clinical Pathways written in PML
 ##### PML-TX Save PML to File
->Upon loading a file, a backup is saved to the New_Pathways folder in the Matte_Group_Proj folder.
->This is simply for testing until the merge feature has been completed.
+1. Upon loading a file, a backup is saved to the New_Pathways folder in the Matte_Group_Proj folder.
+2. This is simply for testing until the merge feature has been completed.
  ---
 
 ### Credit

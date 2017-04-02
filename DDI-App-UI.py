@@ -83,9 +83,9 @@ def loadPMLFile():
 
 def printTasks():
 	if not task_list:
-		print("Task construct not used in PML file.\n")
+		print("Task construct not used in PML file.")
 	else:
-		print("Task construct is now deprecated, please use Sequence in its place.\n\n")
+		print("Task construct is now deprecated, please use Sequence in its place.")
 		if len(task_list) > 1:
 			print("Task was used at lines ")
 			for i in task_list:
@@ -93,7 +93,6 @@ def printTasks():
 				print(" ")
 		else:
 			print("Task was used at line " + str(task_list[0][1]) + ".")
-		print("\n")
 
 def printDrugs():
 	if not drug_list:

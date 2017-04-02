@@ -64,8 +64,18 @@ The group project repository for team Matte
 #### Release Two
 ##### Adding Time to PML
 ##### Mock DDI Characterisation Data
+1. New mock DDI Data can be found in the mockfiles folder in the directory /DDI/
 ##### Lookup Drugs in Mock
+1. From the list of commands in the DDI app, select command 'load mock' to select an Mock DINTO file
+2. The app will ask you to select mock DINTO file from our list of pre-loaded CSVs, or whether you want to use your own file
+3. 3. If you select to use your own file, you will be prompted to enter the path to that file
+4. You can access all of our OWL files in the `mockfiles` folder 
+
 ##### Identify DDIs
+1. From the list of commands in the DDI app, select command 'ddi check' to search the selected mock DINTO file for drugs found in the PML file
+2. If any drugs are found in the app, they will be reported on screen
+3. To test this feature, load drugs.pml and DDI.csv into the app and use this function. The app will report it found 
+>['capecitabine', 'bupropion', 'bad', '2', 'hr']
 ##### Report un-named PML construct
 ##### Report PML construct name-clash
 ##### Report use of task construct

@@ -73,6 +73,7 @@ def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
+    print("ordered_actions " + str(tempList))
     return errList
 
 def parse(data):
@@ -220,7 +221,6 @@ def action():
     tup = ("action", actCnt, idt, lineNum)
     consRef.append(tup)
     incActCnt()
-    
     a = { "action name": idt, "construct type": "action", "action type" : t}
     for (ty, dat) in utilFuncLi(parseType):
         a[ty] = dat
@@ -249,7 +249,7 @@ def parseType():
 
     x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
-    if basType in ["provides", "requires", "agent", "time", "frequency"]:
+    if basType in ["requires", "time", "frequency"]:
         p = parseEx()
     else:
         p = lookahead_f("STRING", "String")

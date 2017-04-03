@@ -3,14 +3,14 @@ bacon testing {
       script { "take drugs" }
       agent { "sick person" }
       tool { "drugs" }
-      requires { "Panadol" }
+      requires { "imipramine" }
       provides { "remedy" }
     }
     action test2 {
       script { "take drugs" }
       agent { "sick person" }
       tool { "drugs" }
-      requires { "Disprin" }  
+      requires { "long walk" }  
       provides { "remedy" }
     }
 }

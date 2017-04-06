@@ -1,7 +1,6 @@
 #!/bin/bash
 
 sudo apt-get update
-<<<<<<< HEAD
 sudo apt-get install tcl
 sudo apt-get install tcl-dev
 sudo apt-get install check
@@ -16,13 +15,7 @@ sudo apt-get build-dep build-essential
 sudo apt-get install gcc
 sudo apt-get install g++
 
-sudo apt-get install libncurses5-dev
-sudo apt-get install python-pip
-sudo pip -H install ontospy
-=======
 sudo apt-get -y install libncurses5-dev
 sudo apt-get -y install python-pip
 sudo pip install --upgrade pip
 sudo pip install ontospy
->>>>>>> bf5776a5e05f09dd5cd0be7a4945696de3bd1986
-

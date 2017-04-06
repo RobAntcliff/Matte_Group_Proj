@@ -79,7 +79,7 @@ def loadPMLFile():
 
 	global drug_list
 	drug_list = getDrugs()
-	printDrugs()
+	#printDrugs()
 
 	global all_list
 	all_list = getDrugsTimeAndFrequency()
@@ -150,6 +150,7 @@ def printErrors():
 	
 def loadMock():
 	global mock
+	mockread = " "
 	usr_input = " "
 
 	while usr_input == " ":
@@ -182,7 +183,16 @@ def loadMock():
 			entered = " "
 	
 	print("\n    You have selected " + str(mock) + "\n")
-	initLogFile(mock)
+	
+	mockread = "\nBelow are the contents of " + str(mock) + "\n     -- Drug 1 - Drug 2 - DDI Type - Time - Unit --\n"
+	with open(mock) as csvfile:
+		reader = csv.DictReader(csvfile)
+		for row in reader:
+			mockread += str("        " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
+		
+		initLogFile(mock)
+		updateLogFile(mock, mockread)
+		print(mockread)
 
 def runCheck():
 	global path
@@ -217,15 +227,6 @@ def ddiCheck():
 		print("\n    WARNING: No PML file has been selected. Please load a file and try again\n")
 		return
 	else: 
-		mockread = "\n\nThe mock will now be displayed below in the form:\n     -- Drug 1 - Drug 2 - DDI Type - Time - Unit -- \nBelow are the contents of the chosen mock DDI file:\n"
-		with open(mock) as csvfile:
-			reader = csv.DictReader(csvfile)
-			for row in reader:
-				mockread += str("        " + row['Drug 1'] + " - " + row['Drug 2'] + " - " + row['DDI Type'] + " - " + row['Time'] +  " - " + row['Unit'] + "\n")
-		
-		updateLogFile(mock, mockread)
-		print(mockread)
-
 		if(len(drug_list) > 1):
 			for x in drug_list:
 				with open(mock) as csvfile:
@@ -268,7 +269,7 @@ def printHelp():
 		"\n  load pml:  to load a PML file to be worked with"+
 		"\n  load owl:  to load an OWL ontology and find a specific class within it"+
 		"\n  load mock:  to load a mock DINTO file to be used to identify DDIs"+
-		"\n  ddi check:  to search the loaded mock DINTO file for any DDIs related to drugs from the loaded PML file"+
+		"\n  check ddi:  to search the loaded mock DINTO file for any DDIs related to drugs from the loaded PML file"+
 		"\n  quit:  to close the application\n")
 
 
@@ -280,7 +281,7 @@ commands = {"help"         : printHelp,
             "quit"         : exitApplication,
 	    	"load pml"     : loadPMLFile,
 		"load mock" : loadMock,
-		"ddi check" : ddiCheck
+		"check ddi" : ddiCheck
 	    	}
 print("\n\n------------------------------------------------------\n"+
       "\nApplication started, see available commands below:")

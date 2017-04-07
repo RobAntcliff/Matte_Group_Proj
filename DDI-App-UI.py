@@ -81,12 +81,21 @@ def loadPMLFile():
 	drug_list = getDrugs()
 	#printDrugs()
 
-	global all_list
-	all_list = getDrugsTimeAndFrequency()
-	printDrugsFrequencyAndTime()
+	all_dict = getDrugsTimeAndFrequency()
+	printDTF(all_dict)
 
 	delays = getDelays()
 	printDelays(delays)
+	
+
+def printDTF(di):
+	if not di:
+		print("No drugs in PML file.")
+	else:
+		for i in di:
+			x = di[i]
+			print("Drug found in PML file -> " + str(x))
+
 
 def printTasks():
 	if not task_list:

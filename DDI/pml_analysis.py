@@ -74,7 +74,6 @@ def run(f):
     contents = f.read()
     parsed = parse(contents)
     drugsLi = findDrugs(tempList)
-    print("ordered_actions " + str(tempList))
     return errList
 
 def parse(data):
@@ -97,7 +96,7 @@ def getDelays():
     return delays
 
 def getDrugsTimeAndFrequency():
-    return findDrugsTimeAndFrequency(tempList)
+    return findDrugsTimeAndFrequency()
 
 def findDrugs(list):
     drugList = []
@@ -116,14 +115,56 @@ def neighborhood(iterable):
         current_item = next_item
     yield (prev_item, current_item, None)
 
-def findDrugsTimeAndFrequency(list):
-    drugList = []
+def findDrugsTimeAndFrequency():
+    key = 0
+    for i in outDrugsTimeDict:
+        act = outDrugsTimeDict.get(i)
+        test = checkDrugs(act)
+        if test and len(act) > 1:
+            if len(act) == 2:
+                sortActOne(act)
+                dtfDict[key] = act
+                key += 1
+            else: 
+                acts = sortActTwo(act)
+                dtfDict[key] = act
+                key += 1
+    return dtfDict
 
-    for prev,item,nextItem in neighborhood(list):
-        if (prev is not None) and (item is not None) and (nextItem is not None):
-            if prev in drugDict.keys():
-                drugList.append("Drug: " + prev + ", Time: " + item + ", Freq: " + nextItem)
-    return drugList
+
+def checkDrugs(list):
+    hasDrug = False
+    for i in list:
+        if i in drugDict.keys():
+            hasDrug = True 
+    return hasDrug
+
+def sortActOne(list):
+    for i, item in enumerate(list):
+        if item in drugDict and list[0] != item:
+            list = swap(list, i, 0, item)
+    return list
+
+def sortActTwo(list):
+    for i, item in enumerate(list):
+        if item in drugDict and list[0] != item:
+            list = swap(list, i, 0, item)
+        elif item in timeDict and list[1] != item:
+            list = swap(list, i, 1, item)
+        elif item in freqDict and list[2] != item: 
+            list = swap(list, i, 2, item)
+    return list
+
+def clear(list):
+    for i in list:
+        list[:] = [x for x in list if x in drugDict or x in timeDict or x in freqDict]
+    return list 
+
+def swap(li, i, n, itm):
+    tmp = li[n] 
+    li[n] = itm
+    li[i] = tmp
+    return li
 
 def lexer(data, exprs):
     head =0
@@ -162,8 +203,8 @@ def lookahead(tag):
 def lookahead_f(tag, const_name):
     (dat, t) = nextTok()
     if tag != t:
-    	err_str = "Type -> " + str(const_name) + " : Line Number -> " +  str(lineNum) + " : Expecting -> " + str(tag) + ", Received -> " + str(dat)
-    	errList.append(err_str)
+        err_str = "Type -> " + str(const_name) + " : Line Number -> " +  str(lineNum) + " : Expecting -> " + str(tag) + ", Received -> " + str(dat)
+        errList.append(err_str)
     return dat
     
 def error_with_message(curr_location):
@@ -262,7 +303,7 @@ def parseType():
 
     x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
-    if basType in ["requires", "time", "frequency", "delay", "script"]:
+    if basType in ["requires", "time", "frequency", "delay"]:
         p = parseEx()
     else:
         p = lookahead_f("STRING", "String")
@@ -281,8 +322,9 @@ def compExpr():
 def constDesc():
     descripCheck = lookahead("NUM") or lookahead("STRING")
     if descripCheck:
-
         descripCheck = descripCheck[1:-1]
+        outDrugsTimeDict.setdefault(actCnt, [])
+        outDrugsTimeDict[actCnt].append(descripCheck)
         tempList.append(descripCheck)
         return {"description": descripCheck}
     idt = lookahead("ID")
@@ -333,6 +375,8 @@ def resetVars():
     del clashFinal[:]
     del errList[:]
     del tempList[:]
+    dtfDict.clear()
+    outDrugsTimeDict.clear()
     resetLN()
     resetTskCnt()
     resetSelCnt()

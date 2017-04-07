@@ -19,4 +19,7 @@ clashes=[]
 clashFinal=[]
 consNames=[]
 lextokens=iter([])
+descCnt = 0
+outDrugsTimeDict = {}
+dtfDict = {}
 

@@ -50,12 +50,22 @@ process testing {
       provides { "remedy" }
       frequency {"weekly"}
     }
-    action test6 {
+    action test7 {
+      delay { "10 minutes" }
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }
       provides { "remedy" }
       frequency {"weekly"}
+      requires {"erythromycin" }
+    }
+    action test8 {
+      delay { "0 minutes" }
+      script { "no drugs just rest" }
+      agent { "sick person" }
+      tool { "drugs" }
+      provides { "remedy" }
+      time {"2pm"}
       requires {"erythromycin" }
     }
 }

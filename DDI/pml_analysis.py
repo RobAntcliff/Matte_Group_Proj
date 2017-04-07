@@ -7,8 +7,6 @@ from DDI.timedict import timeDict
 from DDI.freqdict import freqDict
 from DDI.parser_utils import *
 
-parsed = ""
-
 LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS") 
             , (r'sequence[ \n\t{]'        , "SEQUENCE")
             , (r'task[ \n\t{]'            , "TASK")
@@ -125,8 +123,12 @@ def findDrugsTimeAndFrequency():
                 sortActOne(act)
                 dtfDict[key] = act
                 key += 1
-            else: 
+            elif len(act) == 3: 
                 acts = sortActTwo(act)
+                dtfDict[key] = act
+                key += 1
+            else: 
+                acts = sortActThree(act)
                 dtfDict[key] = act
                 key += 1
     return dtfDict
@@ -146,6 +148,18 @@ def sortActOne(list):
     return list
 
 def sortActTwo(list):
+    for i, item in enumerate(list):
+        if item in drugDict and list[0] != item:
+            list = swap(list, i, 0, item)
+        elif item in timeDict and list[1] != item:
+            list = swap(list, i, 1, item)
+        elif item in freqDict and list[2] != item: 
+            list = swap(list, i, 2, item)
+        else: 
+            list = swap(list, i, 2, item)
+    return list
+
+def sortActThree(list):
     for i, item in enumerate(list):
         if item in drugDict and list[0] != item:
             list = swap(list, i, 0, item)
@@ -320,13 +334,14 @@ def compExpr():
     return r
 
 def constDesc():
-    descripCheck = lookahead("NUM") or lookahead("STRING")
-    if descripCheck:
-        descripCheck = descripCheck[1:-1]
+    dc = lookahead("NUM") or lookahead("STRING")
+    if dc:
+        dc = dc[1:-1]
         outDrugsTimeDict.setdefault(actCnt, [])
-        outDrugsTimeDict[actCnt].append(descripCheck)
-        tempList.append(descripCheck)
-        return {"description": descripCheck}
+        if dc in drugDict or dc in timeDict or dc in freqDict:
+            outDrugsTimeDict[actCnt].append(dc)
+        tempList.append(dc)
+        return {"description": dc}
     idt = lookahead("ID")
     if idt:
         t = {"description":idt}

@@ -94,8 +94,8 @@ def printDTF(di):
 	else:
 		for i in di:
 			x = di[i]
+			#printLi(x)
 			print("Drug found in PML file -> " + str(x))
-
 
 def printTasks():
 	if not task_list:

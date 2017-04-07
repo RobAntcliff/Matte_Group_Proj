@@ -25,6 +25,7 @@ LEXTOKENS = ( (r'process[ \n\t{]'         , "PROCESS")
             , (r'tool'                    , "TOOL")
             , (r'time'                    , "TIME")
             , (r'frequency'               , "FREQUENCY")
+            , (r'delay'                   , "DELAY")
             , (r'[_A-Za-z][_A-Za-z0-9]*'  , "ID")
             , (r'\.'                      , "POINT")
             , (r'[0-9]+'                  , "NUM")
@@ -84,6 +85,16 @@ def parse(data):
 
 def getDrugs():
     return findDrugs(tempList)
+
+def getDelays():
+    delays = []
+    i = 0
+    while i < len(tempList):
+        if "minutes" in tempList[i]:
+            if tempList[i] != "0 minutes":
+                delays.append("Action: " + tempList[i -4] + ", Specifically: " + tempList[i-3] + ", Delay: " + tempList[i])
+        i = i + 1
+    return delays
 
 def getDrugsTimeAndFrequency():
     return findDrugsTimeAndFrequency(tempList)
@@ -246,10 +257,12 @@ def parseType():
         basType = "time"
     elif lookahead("FREQUENCY"):
         basType = "frequency"
+    elif lookahead("DELAY"):
+        basType = "delay"
 
     x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
-    if basType in ["requires", "time", "frequency"]:
+    if basType in ["requires", "time", "frequency", "delay", "script"]:
         p = parseEx()
     else:
         p = lookahead_f("STRING", "String")

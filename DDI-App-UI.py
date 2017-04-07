@@ -85,6 +85,9 @@ def loadPMLFile():
 	all_list = getDrugsTimeAndFrequency()
 	printDrugsFrequencyAndTime()
 
+	delays = getDelays()
+	printDelays(delays)
+
 def printTasks():
 	if not task_list:
 		print("Task construct not used in PML file.")
@@ -97,6 +100,10 @@ def printTasks():
 				print(" ")
 		else:
 			print("Task was used at line " + str(task_list[0][1]) + ".")
+
+def printDelays(list):
+    for i in list:
+    	print ("Delay found in PML file -> " + i)
 
 def printDrugs():
 	if not drug_list:

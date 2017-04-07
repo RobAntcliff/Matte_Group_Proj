@@ -6,6 +6,7 @@ process testing {
       requires { "capecitabine" }
       time { "9pm" }
       frequency { "weekly" }
+      delay { "20 minutes" }
       provides { "remedy" }
     }
     action test2 {
@@ -15,6 +16,7 @@ process testing {
       requires { "sleep" }  
       time { "8pm" }
       frequency { "daily" }
+      delay { "0 minutes" }
       provides { "remedy" }
     }
     action test3 {
@@ -23,7 +25,8 @@ process testing {
       tool { "drugs" }
       requires { "bupropion" }
       time { "10pm" }
-      frequency { "monthly" }  
+      frequency { "monthly" }
+      delay { "180 minutes" }
       provides { "remedy" }
     }
 }

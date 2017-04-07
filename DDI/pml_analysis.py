@@ -58,11 +58,7 @@ def printClashes(cname):
         ctype = i[0]
         ln = i[3]
         print("Construct Type -> " + ctype + " : Line number -> " + str(ln) +".")
-
-def getConsDeets(f):
-    ct = f.read()
-    parsed = parse(ct)
-    print(consRef)
+    
 
 def findTaskUsed():
     return taskCheck
@@ -127,10 +123,6 @@ def findDrugsTimeAndFrequency():
                 acts = sortActTwo(act)
                 dtfDict[key] = act
                 key += 1
-            else: 
-                acts = sortActThree(act)
-                dtfDict[key] = act
-                key += 1
     return dtfDict
 
 
@@ -156,16 +148,6 @@ def sortActTwo(list):
         elif item in freqDict and list[2] != item: 
             list = swap(list, i, 2, item)
         else: 
-            list = swap(list, i, 2, item)
-    return list
-
-def sortActThree(list):
-    for i, item in enumerate(list):
-        if item in drugDict and list[0] != item:
-            list = swap(list, i, 0, item)
-        elif item in timeDict and list[1] != item:
-            list = swap(list, i, 1, item)
-        elif item in freqDict and list[2] != item: 
             list = swap(list, i, 2, item)
     return list
 

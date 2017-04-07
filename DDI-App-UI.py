@@ -79,7 +79,6 @@ def loadPMLFile():
 
 	global drug_list
 	drug_list = getDrugs()
-	#printDrugs()
 
 	all_dict = getDrugsTimeAndFrequency()
 	printDTF(all_dict)
@@ -94,7 +93,6 @@ def printDTF(di):
 	else:
 		for i in di:
 			x = di[i]
-			#printLi(x)
 			print("Drug found in PML file -> " + str(x))
 
 def printTasks():

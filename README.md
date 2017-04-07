@@ -120,6 +120,11 @@ The group project repository for team Matte
 
 
 ##### Specify Delay
+1. To add a delay, add "delay { x minutes }", with the x replaced by the length in minutes.
+2. To see if a pml file contains a delay, select "load pml" from the list of commands in the DDI app.
+3. Then choose the pml file you wish to check for delays.
+4. If a file contains delays, they will be reported. 
+ 
 ##### Merging Clinical Pathways written in PML
 ##### PML-TX Save PML to File
 1. Upon loading a file, a backup is saved to the New_Pathways folder in the Matte_Group_Proj folder.

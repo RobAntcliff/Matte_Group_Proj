@@ -124,7 +124,7 @@ The group project repository for team Matte
 
 
 ##### Specify Delay
-1. To add a delay, add "delay { "x" }", with the x replaced by the time period, for exapmle, 30 minutes, 6 hours, 3 days, and so on.
+1. To add a delay, add "delay { "x" }", with the x replaced by the time period, for example, 30 minutes, 6 hours, 3 days, and so on.
 2. To see if a pml file contains a delay, select "load pml" from the list of commands in the DDI app.
 3. Then choose the pml file you wish to check for delays.
 4. If a file contains delays, they will be reported, with the associated action number included in the report, otherwise the app will output "No Delays specified in PML file".

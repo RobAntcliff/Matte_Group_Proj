@@ -130,6 +130,10 @@ The group project repository for team Matte
 4. If a file contains delays, they will be reported. 
  
 ##### Merging Clinical Pathways written in PML
+1. From DDI folder, run "python3 merge.py pmlfiles/filename1.pml pmlfiles/filename2.pml". Try using "drugs.pml" and "branch.pml" as most others have intentional errors for testing.
+2. Resulting file goes is saved pmlfiles folder with name of both ie "filename1filename2merge.pml"
+3. Can be pmlchecked using main app to make sure result is valid. Simply run load pml and choose to use your own file, then paste in the path of the new merged file.
+
 ##### PML-TX Save PML to File
 1. Upon loading a file, a backup is saved to the New_Pathways folder in the Matte_Group_Proj folder.
 2. This is simply for testing until the merge feature has been completed.

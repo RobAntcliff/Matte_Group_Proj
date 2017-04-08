@@ -131,7 +131,7 @@ The group project repository for team Matte
  
 ##### Merging Clinical Pathways written in PML
 1. From DDI folder, run "python3 merge.py pmlfiles/filename1.pml pmlfiles/filename2.pml". Try using "drugs.pml" and "branch.pml" as most others have intentional errors for testing.
-2. Resulting file goes is saved pmlfiles folder with name of both ie "filename1filename2merge.pml"
+2. Resulting file is saved in pmlfiles folder with the name of both ie "filename1filename2merge.pml"
 3. Can be pmlchecked using main app to make sure result is valid. Simply run load pml and choose to use your own file, then paste in the path of the new merged file.
 
 ##### PML-TX Save PML to File

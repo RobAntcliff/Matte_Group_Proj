@@ -25,8 +25,10 @@ The group project repository for team Matte
 1. From the list of commands in the DDI app, select command 'find drugs' to search the selected PML file for drugs
 2. If any drugs are found in the app, they will be reported on screen
 3. To test this feature, load drugs.pml into the app and use this function. The app will report it found 
-> Drug found in PML File -> Drug: capecitabine, Time: 9pm, Freq: weekly
-> Drug found in PML File -> Drug: bupropion, Time: 10pm, Freq: monthly
+> Drug found in PML file -> ['capecitabine', '9pm', 'weekly']
+> Drug found in PML file -> ['fluoxetine', '11pm', 'monthly']
+> Drug found in PML file -> ['erythromycin', 'weekly']
+> Drug found in PML file -> ['capecitabine']
 
 ##### PML Error and Warning Highlights + PML Log-file generation
 1. While using the DDI app, if a PML is not loaded before actions are performed on a pml file, the app will prompt the user that no PML has been selected, and one is needed
@@ -66,8 +68,10 @@ The group project repository for team Matte
 ##### Adding Time to PML
 1. To check for the syntax of the time in PML, go to DDI/pmlfiles/drugs.pml
 2. To test this feature, load drugs.pml into the app. The app will report
-> Drug found in PML File -> Drug: capecitabine, Time: 9pm, Freq: weekly
-> Drug found in PML File -> Drug: bupropion, Time: 10pm, Freq: monthly
+> Drug found in PML file -> ['capecitabine', '9pm', 'weekly']
+> Drug found in PML file -> ['fluoxetine', '11pm', 'monthly']
+> Drug found in PML file -> ['erythromycin', 'weekly']
+> Drug found in PML file -> ['capecitabine']
 
 ##### Mock DDI Characterisation Data
 1. New mock DDI Data can be found in the mockfiles folder in the directory /DDI/

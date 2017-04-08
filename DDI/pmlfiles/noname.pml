@@ -20,4 +20,12 @@ process testing {
       requires { "bupropion" }  
       provides { "remedy" }
     }
+    action test5 {
+      script { "no drugs just rest" }
+      agent { "sick person" }
+      tool { "drugs" }
+      requires { "bupropion" } 
+      frequency {"monthly"} 
+      provides { "remedy" }
+    }
 }

@@ -85,7 +85,7 @@ def loadPMLFile():
 
 	delays = getDelays()
 	printDelays(delays)
-	
+
 
 def printDTF(di):
 	if not di:
@@ -111,16 +111,7 @@ def printTasks():
 def printDelays(list):
     for i in list:
     	print ("Delay found in PML file -> " + i)
-
-def printDrugs():
-	if not drug_list:
-		print("\nNo drugs in PML File\n")
-	elif len(drug_list) == 1:
-		print("\nDrug found in PML File -> " + drug_list[0])
-	else: 
-		print("\n")
-		for i in range(len(drug_list)):
-			print("Drug found in PML File -> " + drug_list[i])
+    	
 
 def printDrugsFrequencyAndTime():
 	if not all_list:

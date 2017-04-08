@@ -59,13 +59,11 @@ process testing {
       frequency {"weekly"}
       requires {"erythromycin" }
     }
-    action test8 {
-      delay { "0 minutes" }
+   action test8 {
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }
+      requires { "capecitabine" }
       provides { "remedy" }
-      time {"2pm"}
-      requires {"erythromycin" }
     }
 }

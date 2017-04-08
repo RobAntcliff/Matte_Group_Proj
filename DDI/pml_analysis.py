@@ -58,7 +58,6 @@ def printClashes(cname):
         ctype = i[0]
         ln = i[3]
         print("Construct Type -> " + ctype + " : Line number -> " + str(ln) +".")
-    
 
 def findTaskUsed():
     return taskCheck
@@ -79,6 +78,9 @@ def parse(data):
 def getDrugs():
     return findDrugs(tempList)
 
+def getDel():
+    return outDelayDict
+
 def getDelays():
     delays = []
     i = 0
@@ -90,7 +92,11 @@ def getDelays():
     return delays
 
 def getDrugsTimeAndFrequency():
-    return findDrugsTimeAndFrequency()
+    x = findDrugsTimeAndFrequency()
+    if not x:
+        return []
+    else:
+        return x
 
 def findDrugs(list):
     drugList = []
@@ -114,17 +120,19 @@ def findDrugsTimeAndFrequency():
     for i in outDrugsTimeDict:
         act = outDrugsTimeDict.get(i)
         test = checkDrugs(act)
-        if test and len(act) > 1:
+        if test and len(act) == 1:
+            dtfDict[key] = act
+            key += 1
+        elif test and len(act) > 1:
             if len(act) == 2:
-                sortActOne(act)
+                act = sortActOne(act)
                 dtfDict[key] = act
                 key += 1
             elif len(act) == 3: 
-                acts = sortActTwo(act)
+                act = sortActTwo(act)
                 dtfDict[key] = act
                 key += 1
     return dtfDict
-
 
 def checkDrugs(list):
     hasDrug = False
@@ -135,20 +143,22 @@ def checkDrugs(list):
 
 def sortActOne(list):
     for i, item in enumerate(list):
-        if item in drugDict and list[0] != item:
-            list = swap(list, i, 0, item)
+        if item in drugDict:
+            if list[0] != item:
+                list = swap(list, i, 0, item)
     return list
 
 def sortActTwo(list):
     for i, item in enumerate(list):
-        if item in drugDict and list[0] != item:
-            list = swap(list, i, 0, item)
-        elif item in timeDict and list[1] != item:
-            list = swap(list, i, 1, item)
-        elif item in freqDict and list[2] != item: 
-            list = swap(list, i, 2, item)
-        else: 
-            list = swap(list, i, 2, item)
+        if item in drugDict:
+            if list[0] != item:
+                list = swap(list, i, 0, item)
+        elif item in timeDict:
+            if list[1] != item:
+                list = swap(list, i, 1, item)
+        elif item in freqDict: 
+            if list[2] != item:
+                list = swap(list, i, 2, item)
     return list
 
 def clear(list):
@@ -257,6 +267,8 @@ def flow(construct):
 
 def action():
     idt = lookahead_f("ID", "Action")
+    actNm = idt
+
     if lookahead("MANUAL"):
         t = "manual"
     elif lookahead("EXECUTABLE"):
@@ -320,8 +332,11 @@ def constDesc():
     if dc:
         dc = dc[1:-1]
         outDrugsTimeDict.setdefault(actCnt, [])
+        outDelayDict.setdefault(actCnt, [])
         if dc in drugDict or dc in timeDict or dc in freqDict:
             outDrugsTimeDict[actCnt].append(dc)
+        else: 
+            outDelayDict[actCnt].append(dc)
         tempList.append(dc)
         return {"description": dc}
     idt = lookahead("ID")
@@ -365,7 +380,6 @@ def output(list):
 
 def resetVars():
     del consNames[:]
-    del descrLi[:]
     del consRef[:]
     del taskCheck[:]
     del clashes[:]
@@ -374,6 +388,7 @@ def resetVars():
     del tempList[:]
     dtfDict.clear()
     outDrugsTimeDict.clear()
+    outDelayDict.clear()
     resetLN()
     resetTskCnt()
     resetSelCnt()
@@ -457,7 +472,7 @@ def resetItrCnt():
 
 def resetActCnt():
     global actCnt
-    actCnt = 1
+    actCnt = 0
 
 class ErrorReport(Exception):pass
 

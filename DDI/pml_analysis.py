@@ -79,7 +79,11 @@ def getDrugs():
     return findDrugs(tempList)
 
 def getDel():
-    return outDelayDict
+    x = findDelays()
+    if not x: 
+        return [] 
+    else: 
+        return x
 
 def getDelays():
     delays = []
@@ -133,6 +137,12 @@ def findDrugsTimeAndFrequency():
                 dtfDict[key] = act
                 key += 1
     return dtfDict
+
+def findDelays():
+    for key, val in outDelayDict.items():
+        if len(val) > 0:
+            delDict[key] = val
+    return delDict
 
 def checkDrugs(list):
     hasDrug = False
@@ -312,22 +322,22 @@ def parseType():
     x = lookahead_f("LEFTBRACKET", "Left Bracket")
     incLineNum()
     if basType in ["requires", "time", "frequency", "delay"]:
-        p = parseEx()
+        p = parseEx(basType)
     else:
         p = lookahead_f("STRING", "String")
     lookahead_f("RIGHTBRACKET", "Right Bracket")
     r = (basType, p)
     return r
 
-def compExpr():
-    r = {"left": constDesc()}
+def compExpr(typ):
+    r = {"left": constDesc(typ)}
     rel = lookahead("COMPARE")
     if rel:
         r['rel'] = rel
-        r['right'] = constDesc()
+        r['right'] = constDesc(typ)
     return r
 
-def constDesc():
+def constDesc(typ):
     dc = lookahead("NUM") or lookahead("STRING")
     if dc:
         dc = dc[1:-1]
@@ -335,7 +345,7 @@ def constDesc():
         outDelayDict.setdefault(actCnt, [])
         if dc in drugDict or dc in timeDict or dc in freqDict:
             outDrugsTimeDict[actCnt].append(dc)
-        else: 
+        elif typ == "delay": 
             outDelayDict[actCnt].append(dc)
         tempList.append(dc)
         return {"description": dc}
@@ -346,11 +356,11 @@ def constDesc():
             t['n_id'] = lookahead_f("ID","val expr")
         return t
 
-def parseEx():
-    a =[compExpr()]
+def parseEx(typ):
+    a =[compExpr(typ)]
     ch_op = lookahead("CONJUCT")
     while(ch_op):
-        comp = compExpr()
+        comp = compExpr(typ)
         comp['conjunct'] = ch_op
         a.append(comp)
         ch_op = lookahead("CONJUCT")
@@ -389,6 +399,7 @@ def resetVars():
     dtfDict.clear()
     outDrugsTimeDict.clear()
     outDelayDict.clear()
+    delDict.clear()
     resetLN()
     resetTskCnt()
     resetSelCnt()

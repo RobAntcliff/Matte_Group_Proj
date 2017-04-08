@@ -22,6 +22,7 @@ process testing {
     }
     action test5 {
       script { "no drugs just rest" }
+      delay {"2 weeks"}
       agent { "sick person" }
       tool { "drugs" }
       requires { "bupropion" } 

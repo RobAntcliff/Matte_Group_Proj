@@ -77,14 +77,21 @@ def loadPMLFile():
 	task_list = findTaskUsed()
 	runCheck()
 
-	global drug_list
-	drug_list = getDrugs()
-
 	all_dict = getDrugsTimeAndFrequency()
 	printDTF(all_dict)
 
-	delays = getDelays()
-	printDelays(delays)
+	delays = getDel()
+	printDels(delays)
+
+
+def printDels(dels):
+	if not dels:
+		print("No Delays specified in PML file")
+	else:
+		for key, val in dels.items():
+			actNum = key 
+			delay = val[0] 
+			print("Delay of " + str(delay) + " -> Action " + str(key))
 
 
 def printDTF(di):
@@ -111,7 +118,7 @@ def printTasks():
 def printDelays(list):
     for i in list:
     	print ("Delay found in PML file -> " + i)
-    	
+
 
 def printDrugsFrequencyAndTime():
 	if not all_list:

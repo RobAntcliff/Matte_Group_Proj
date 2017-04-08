@@ -18,26 +18,17 @@ process testing {
       time { "8pm" }
       provides { "remedy" }
     }
-    action test3 {
-      script { "no drugs just rest" }
-      agent { "sick person" }
-      tool { "drugs" }
-      requires { "bupropion" }
-      time { "10pm" }
-      frequency { "monthly" } 
-      delay { "0 minutes" } 
-      provides { "remedy" }
-    }
-    action test4 {
+    action actNew {
       script { "no drugs just rest" }
       frequency { "monthly" }
       agent { "sick person" }
       tool { "drugs" }
       time { "11pm" }  
+      delay {"6 hours"}
       provides { "remedy" }
       requires { "fluoxetine" }
     }
-    action test5 {
+    action bla {
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }
@@ -50,7 +41,7 @@ process testing {
       provides { "remedy" }
       frequency {"weekly"}
     }
-    action test7 {
+    action lala {
       delay { "10 minutes" }
       script { "no drugs just rest" }
       agent { "sick person" }

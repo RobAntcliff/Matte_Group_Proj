@@ -19,5 +19,6 @@ delayLi=[]
 lextokens=iter([])
 outDrugsTimeDict = {}
 outDelayDict ={}
+delDict = {}
 dtfDict = {}
 

@@ -124,10 +124,14 @@ The group project repository for team Matte
 
 
 ##### Specify Delay
-1. To add a delay, add "delay { x minutes }", with the x replaced by the length in minutes.
+1. To add a delay, add "delay { "x" }", with the x replaced by the time period, for exapmle, 30 minutes, 6 hours, 3 days, and so on.
 2. To see if a pml file contains a delay, select "load pml" from the list of commands in the DDI app.
 3. Then choose the pml file you wish to check for delays.
-4. If a file contains delays, they will be reported. 
+4. If a file contains delays, they will be reported, with the associated action number included in the report, otherwise the app will output "No Delays specified in PML file".
+5. Running on "drugs.pml" the app will report 
+> Delay of 20 minutes -> Action 1
+> Delay of 6 hours -> Action 3
+> Delay of 10 minutes -> Action 6
  
 ##### Merging Clinical Pathways written in PML
 1. From DDI folder, run "python3 merge.py pmlfiles/filename1.pml pmlfiles/filename2.pml". Try using "drugs.pml" and "branch.pml" as most others have intentional errors for testing.

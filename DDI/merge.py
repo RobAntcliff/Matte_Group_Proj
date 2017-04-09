@@ -4,6 +4,7 @@
 
 import sys
 import os
+from DDI.pmlTX import *
 
 #way to indent text
 try:
@@ -28,41 +29,39 @@ except Exception:
 def getFileNameWithoutExtension(path):
   return path.split('\\').pop().split('/').pop().rsplit('.', 1)[0]
 
-#load source files + contents
-file_1 = open(sys.argv[1])
-file_2 = open(sys.argv[2])
+def merge(file_one, file_two):
+	#load source files + contents
+	file_1 = open(file_one)
+	file_2 = open(file_two)
 
-name_1 = getFileNameWithoutExtension(file_1.name)
-name_2 = getFileNameWithoutExtension(file_2.name)
+	name_1 = getFileNameWithoutExtension(file_1.name)
+	name_2 = getFileNameWithoutExtension(file_2.name)
 
-#read contents and change top level process to iteration of our merged branch
-#and append name of sourcefile to action names to avoid nameclash
-file_1_contents = file_1.read()
-file_1_contents = file_1_contents.replace("process","iteration",1)
-file_1_contents = file_1_contents.replace("action ","action "+name_1)
-file_2_contents = file_2.read()
-file_2_contents = file_2_contents.replace("process","iteration",1)
-file_2_contents = file_2_contents.replace("action ","action "+name_2)
+	#read contents and change top level process to iteration of our merged branch
+	#and append name of sourcefile to action names to avoid nameclash
+	file_1_contents = file_1.read()
+	file_1_contents = file_1_contents.replace("process","iteration",1)
+	#file_1_contents = file_1_contents.replace("action ","action "+name_1+"_")
+	file_2_contents = file_2.read()
+	file_2_contents = file_2_contents.replace("process","iteration",1)
+	#file_2_contents = file_2_contents.replace("action ","action "+name_2+"_")
 
-#create new file from name of source files
-full_name = name_1 + name_2 + "merge.pml"
-filepath = os.path.join(subdirectory, full_name)
-merged_file = open(filepath, 'w')
+	#create new file from name of source files
+	full_name = name_1 + '_' + name_2 + '_' + "merge.pml"
 
-#slam contents of both files into new file
-with open(filepath, "a") as myfile:
+	#name top-level process after input files
+	myfile = "process "+name_1+"_"+name_2+"_merge {\n"
+	myfile += indent("branch merged {\n", 2)
 
-  #name top-level process after input files
-  myfile.write("process "+name_1+"_"+name_2+"_merge {\n")
-  myfile.write(indent("branch merged {\n", 2))
+	myfile += indent(file_1_contents, 4)
 
-  myfile.write(indent(file_1_contents, 4))
+	myfile += "\n"
 
-  myfile.write("\n")
+	myfile += indent(file_2_contents, 4)
 
-  myfile.write(indent(file_2_contents, 4))
-
-  myfile.write(indent("}\n", 2))
-  myfile.write("}")
+	myfile += indent("}\n", 2)
+	myfile += "}"
+	
+	savePMLFile(full_name, myfile)
 
 

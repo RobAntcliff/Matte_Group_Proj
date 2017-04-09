@@ -2,6 +2,7 @@ import subprocess
 import sys
 import csv
 
+from DDI.merge import *
 from DDI.pmlTX import *
 from DDI.pml_analysis import *
 from DDI.utils import *
@@ -265,6 +266,19 @@ def ddiCheck():
 		print("\n    There are no DDIs in this PMLs.\n")
 	#updateLogFile(mock, ddi)
 
+def mergePML():
+	usr_input = input("\n------------------------------------------------------\n"+
+			  "\n\nPlease make a choice from the options below by entering the number beside it:"+
+			  "\n\n       1: Merge the drugs.pml file and the branch.pml file"+
+			  "\n       2: Merge two files of your choosing"+
+			  "\n\nEnter your choice: ")
+	if usr_input == "1":
+		merge("DDI/pmlfiles/drugs.pml", "DDI/pmlfiles/branch.pml")
+	elif usr_input == "2":
+		file_one = input("\n\n------------------------------------------------------\n"+
+				 "\nPlease enter the absolute path to the first file: ")
+		file_two = input("\n\nPlease enter the absolute path to the second file: ")
+		merge(file_one, file_two)
 
 def loadOwl():
 	loadDinto = 'DDI/loadDINTOClass.py'
@@ -277,12 +291,13 @@ def exitApplication():
 def printHelp():
 	print(  "\n------------------------------------------------------\n"+
 		"\nTo run a command enter"+
-		"\n  help:  to display this list of commands at any time"+
-		"\n  load pml:  to load a PML file to be worked with"+
-		"\n  load owl:  to load an OWL ontology and find a specific class within it"+
-		"\n  load mock:  to load a mock DINTO file to be used to identify DDIs"+
-		"\n  check ddi:  to search the loaded mock DINTO file for any DDIs related to drugs from the loaded PML file"+
-		"\n  quit:  to close the application\n")
+		"\n  help:           to display this list of commands at any time"+
+		"\n  load pml:       to load a PML file to be worked with"+
+		"\n  merge pathways: to select two pml files t merge into  a single pathway"+
+		"\n  load owl:       to load an OWL ontology and find a specific class within it"+
+		"\n  load mock:      to load a mock DINTO file to be used to identify DDIs"+
+		"\n  check ddi:      to search the loaded mock DINTO file for any DDIs related to drugs from the loaded PML file"+
+		"\n  quit:           to close the application\n")
 
 
 def printErr(err):
@@ -293,7 +308,8 @@ commands = {"help"         : printHelp,
             "quit"         : exitApplication,
 	    	"load pml"     : loadPMLFile,
 		"load mock" : loadMock,
-		"check ddi" : ddiCheck
+		"check ddi" : ddiCheck,
+		"merge pathways" : mergePML
 	    	}
 print("\n\n------------------------------------------------------\n"+
       "\nApplication started, see available commands below:")

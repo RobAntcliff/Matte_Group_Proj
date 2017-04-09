@@ -1,8 +1,8 @@
 process testing {
     action test {
-      script { "take drugs" }
+      script     { "take drugs" }
       agent { "sick person" }
-      time { "9pm" }
+      time    { "9pm" }
       tool { "drugs" }
       requires { "capecitabine" }
       delay{ "20 minutes"}
@@ -21,8 +21,8 @@ process testing {
     action actNew {
       script { "no drugs just rest" }
       frequency { "monthly" }
-      agent { "sick person" }
-      tool { "drugs" }
+      agent { "sick person"}
+      tool { "drugs"}
       time { "11pm" }  
       delay {"6 hours"}
       provides { "remedy" }
@@ -34,7 +34,7 @@ process testing {
       tool { "drugs" }
       provides { "remedy" }
     }
-    action test6 {
+    action test {
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }

@@ -34,7 +34,7 @@ process testing {
       tool { "drugs" }
       provides { "remedy" }
     }
-    action test {
+    action test7 {
       script { "no drugs just rest" }
       agent { "sick person" }
       tool { "drugs" }

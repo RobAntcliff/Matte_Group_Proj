@@ -266,18 +266,44 @@ def ddiCheck():
 		print("\n    There are no DDIs in this PMLs.\n")
 	#updateLogFile(mock, ddi)
 
+def checkMergeFile(the_file):
+	global error_li
+	error_li = run(open(the_file, 'r'))
+
+	global task_list
+	task_list = findTaskUsed()
+	printErrors()
+	findConsClash()
+	printTasks()
+
+	if not error_li:
+		print("\n\nErrors discovered in file, returning to main menu.\nPlease fix the errors before retrying or enter a valid PML file.")
+	
+
 def mergePML():
 	usr_input = input("\n------------------------------------------------------\n"+
 			  "\n\nPlease make a choice from the options below by entering the number beside it:"+
 			  "\n\n       1: Merge the drugs.pml file and the branch.pml file"+
-			  "\n       2: Merge two files of your choosing"+
+			  "\n       2: Merge two valid files of your choosing, if errors are present please cancel and try again"+
+			  "\n       3: Cancel this action"+
 			  "\n\nEnter your choice: ")
 	if usr_input == "1":
 		merge("DDI/pmlfiles/drugs.pml", "DDI/pmlfiles/branch.pml")
 	elif usr_input == "2":
 		file_one = input("\n\n------------------------------------------------------\n"+
-				 "\nPlease enter the absolute path to the first file: ")
+				 "\nPlease enter the absolute path to the first file or cancel to exit: ")
+		if file_one == "cancel":
+			return
+		checkMergeFile(file_one)
+
 		file_two = input("\n\nPlease enter the absolute path to the second file: ")
+
+		if file_two == "cancel":
+			return
+		checkMergeFile(file_two)		
+		cont = input("\n\nIf no errors have been found simply press Enter to merge the files.\nOr type \'cancel\' to return to main menu.\n\nContinue?")
+		if cont == "cancel":
+			return
 		merge(file_one, file_two)
 
 def loadOwl():

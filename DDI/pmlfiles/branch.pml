@@ -1,7 +1,7 @@
 process test_branch {
     iteration {
 	branch{
-		action A manual{
+		action A manual {
 		  requires {"R.html"}
 		  provides {"R.html"}
 		  agent {"ed"}
@@ -14,7 +14,7 @@ process test_branch {
 		  tool {"hammer"}
 		}
 		action lala manual {
-		  requires{"R.html"}
+		  requires {"R.html"}
 		  provides {"R.html"}
 		  agent {"ed"}
 		  tool {"hammer"}

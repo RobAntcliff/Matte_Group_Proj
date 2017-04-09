@@ -49,6 +49,13 @@ def prettyPML(pml_string):
 		elif current[len(current)-1] == '}' and len(current) > 1:
 			pml_list.insert(i+1, current[:-1])
 			pml_list.insert(i+2, '}')
+		
+		elif len(current) > 1 and '{' in current:
+			current_split = current.partition('{')
+			pml_list.insert(i+1, current_split[0])
+			pml_list.insert(i+2, current_split[1])
+			if not current_split[2] == "":
+				pml_list.insert(i+3, current_split[2])
 
 		else:
 			if pml_list[i-1] in containers:

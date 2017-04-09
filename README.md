@@ -118,7 +118,7 @@ The group project repository for team Matte
 ##### Report use of task construct
 1. This error is checked while parsing and will report the use of task constructs.
 2. If no such constructs exist the user is informed through on screen print.
-3. To test this feature, load branch.pml into the app. The app will report
+3. To test this feature, load task.pml into the app. The app will report
 > Task construct is now deprecated, please use Sequence in its place.
 > Task was used at line 2.
 

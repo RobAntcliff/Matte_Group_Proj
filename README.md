@@ -93,10 +93,13 @@ The group project repository for team Matte
 >        capecitabine - bupropion - bad - 2 - hr
 
 ##### Identify DDIs
-1. From the list of commands in the DDI app, select command 'check ddi' to search the selected mock DINTO file for drugs found in the PML file
+1. Once you have loaded in the PML file and the mock DINTO file, from the list of commands in the DDI app, select command 'check ddi' to search the selected mock DINTO file for drugs found in the PML file
 2. If any drugs are found in the app, they will be reported on screen
 3. To test this feature, load drugs.pml and DDI.csv into the app and use this function. The app will report it found 
-> ['capecitabine', 'bupropion', 'bad', '2', 'hr']
+> ('capecitabine', 'fluoxetine', 'bad', '2', 'hr')
+> ('capecitabine', 'erythromycin', 'bad', '2', 'day')
+> ('erythromycin', 'fluoxetine', 'good', '3', 'day')
+
 
 ##### Report un-named PML construct
 1. This error is checked while parsing and will report unnamed constructs.

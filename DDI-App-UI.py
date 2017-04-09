@@ -78,6 +78,10 @@ def loadPMLFile():
 	task_list = findTaskUsed()
 	runCheck()
 
+	global drug_list
+	drug_list = getDrugs()
+
+
 	all_dict = getDrugsTimeAndFrequency()
 	printDTF(all_dict)
 

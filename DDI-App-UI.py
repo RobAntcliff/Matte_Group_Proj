@@ -31,6 +31,7 @@ def loadPMLFile():
 				"\n  6:  for task.pml"+
 				"\n  7:  for nodrugs.pml"+
 				"\n  8:  for noname.pml"+
+				"\n  9:  for spaced_drugs.pml"+
 				"\n  return:  to return to main menu\n"+
 				"\n\nEnter your choice here: ")
 	
@@ -62,6 +63,9 @@ def loadPMLFile():
 		
 		elif entered == "8":
 			path = "DDI/pmlfiles/noname.pml"
+
+		elif entered == "9":
+			path = "DDI/pmlfiles/spaced_drugs.pml"
 		
 		elif entered == "return":
 			print("\n    Returning to menu.\n")

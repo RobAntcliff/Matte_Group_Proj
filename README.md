@@ -26,8 +26,11 @@ The group project repository for team Matte
 2. If any drugs are found in the app, they will be reported on screen
 3. To test this feature, load drugs.pml into the app and use this function. The app will report it found 
 > Drug found in PML file -> ['capecitabine', '9pm', 'weekly']
+> 
 > Drug found in PML file -> ['fluoxetine', '11pm', 'monthly']
+> 
 > Drug found in PML file -> ['erythromycin', 'weekly']
+> 
 > Drug found in PML file -> ['capecitabine']
 
 ##### PML Error and Warning Highlights + PML Log-file generation
@@ -49,12 +52,19 @@ The group project repository for team Matte
 2. The app will search for the entered class, and report its findings
 3. To test this feature, load OAE_DINTO_subset.owl into the app and use this function. When prompted for a class, enter `lung AE`. The app will report 
 > Label: lung AE
+> 
 > Description: a respiratory system AE which has an outcome of lung disorder
+> 
 > Alternate Term: lung disorder AE
+> 
 > Definition Source:
+> 
 > SubClass of: http://purl.obolibrary.org/obo/OAE_0000378
+> 
 > Term Editor: YH
+> 
 > See Also:HPO: HP_0006552, MedDRA: 10025082, SIDER: C0024115
+> 
 > Type: http://www.w3.org/2002/07/owl#Class
 
 
@@ -69,8 +79,11 @@ The group project repository for team Matte
 1. To check for the syntax of the time in PML, go to DDI/pmlfiles/drugs.pml
 2. To test this feature, load drugs.pml into the app. The app will report
 > Drug found in PML file -> ['capecitabine', '9pm', 'weekly']
+> 
 > Drug found in PML file -> ['fluoxetine', '11pm', 'monthly']
+> 
 > Drug found in PML file -> ['erythromycin', 'weekly']
+> 
 > Drug found in PML file -> ['capecitabine']
 
 ##### Mock DDI Characterisation Data
@@ -83,13 +96,21 @@ The group project repository for team Matte
 4. The contents of the mock DINTO file will be reported on screen and in it's logfile, found in `log_folder/MOCK/`
 4. To test this feature, load DDI.csv into the app. The app will report
 > Below are the contents of DDI/mockfiles/DDI.csv
+> 
 >     -- Drug 1 - Drug 2 - DDI Type - Time - Unit --
+>     
 >        coke - pepsi - bad - 5 - sec
+>        
 >        coke - 7up - bad - 2 - min
+>        
 >        pepsi - flat7up - good - 3 - hr
+>        
 >        paracetamol - alcohol - good - 1 - day
+>        
 >        caffeine - alcohol - bad - 1 - week
+>        
 >        coke - alcohol - good - 52 - week
+>        
 >        capecitabine - bupropion - bad - 2 - hr
 
 ##### Identify DDIs
@@ -97,7 +118,9 @@ The group project repository for team Matte
 2. If any drugs are found in the app, they will be reported on screen
 3. To test this feature, load drugs.pml and DDI.csv into the app and use this function. The app will report it found 
 > ('capecitabine', 'fluoxetine', 'bad', '2', 'hr')
+> 
 > ('capecitabine', 'erythromycin', 'bad', '2', 'day')
+> 
 > ('erythromycin', 'fluoxetine', 'good', '3', 'day')
 
 
@@ -106,6 +129,7 @@ The group project repository for team Matte
 2. If no such constructs exist, no report is printed.
 3. To test this feature, load noname.pml into the app. The app will report
 > Error Report :: Type -> Action : Line Number -> 9 : Expecting -> ID, Received -> {
+> 
 > Error Report :: Type -> Left Bracket : Line Number -> 9 : Expecting -> LEFTBRACKET, Received -> script 
 
 ##### Report PML construct name-clash
@@ -113,8 +137,11 @@ The group project repository for team Matte
 2. If no such constructs exist the user is told on screen.
 3. To test this feature, load clash1.pml into the app. The app will report
 > Construct name clash occured : Name -> act1
+> 
 > Construct Type -> action : Line number -> 2.
+> 
 > Construct Type -> action : Line number -> 16.
+> 
 > Task construct not used in PML file.
 
 
@@ -123,6 +150,7 @@ The group project repository for team Matte
 2. If no such constructs exist the user is informed through on screen print.
 3. To test this feature, load task.pml into the app. The app will report
 > Task construct is now deprecated, please use Sequence in its place.
+> 
 > Task was used at line 2.
 
 
@@ -133,7 +161,9 @@ The group project repository for team Matte
 4. If a file contains delays, they will be reported, with the associated action number included in the report, otherwise the app will output "No Delays specified in PML file".
 5. To test this feature, load drugs.pml into the app. the app will report 
 > Delay of 20 minutes -> Action 1
+> 
 > Delay of 6 hours -> Action 3
+> 
 > Delay of 10 minutes -> Action 6
 
 ##### Merging Clinical Pathways written in PML
@@ -153,3 +183,4 @@ The group project repository for team Matte
 
 ### Credit
 DINTO - https://github.com/labda/DINTO
+

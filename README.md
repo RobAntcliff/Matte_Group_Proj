@@ -125,23 +125,28 @@ The group project repository for team Matte
 
 ##### Specify Delay
 1. To add a delay, add "delay { "x" }", with the x replaced by the time period, for example, 30 minutes, 6 hours, 3 days, and so on.
-2. To see if a pml file contains a delay, select "load pml" from the list of commands in the DDI app.
+2. To see if a PML file contains a delay, select "load pml" from the list of commands in the DDI app.
 3. Then choose the pml file you wish to check for delays.
 4. If a file contains delays, they will be reported, with the associated action number included in the report, otherwise the app will output "No Delays specified in PML file".
-5. Running on "drugs.pml" the app will report 
+5. To test this feature, load drugs.pml into the app. the app will report 
 > Delay of 20 minutes -> Action 1
 > Delay of 6 hours -> Action 3
 > Delay of 10 minutes -> Action 6
- 
+
 ##### Merging Clinical Pathways written in PML
-1. Run the main app and enter the "merge pathways" command, then enter 1 to use our predefined files and 2 to enter your own files.
-2. Resulting file is saved in New_Pathways folder with the name of both ie "filename1_filename2_merge.pml"
-3. Can be pmlchecked using main app to make sure result is valid. Simply run load pml and choose to use your own file, then paste in the path of the new merged file.
+1. From the list of commands in the DDI app, select command 'merge pathways' to merge two PML files together.
+2. The app will ask you to select to use our preloaded files or to enter your own files.
+2. Resulting file is saved in New_Pathways folder with the name of both ie "filename1_filename2_merge.pml".
+3. This file can now be loaded into the app, using "load pml" and selecting to enter your own pathway to a file. 
+4. To test this feature, choose to merge drugs.pml and branch.pml, and open the file from the new_pathways folder and inspect.
 
 ##### PML-TX Save PML to File
 1. Upon merging two files, the result saved to the New_Pathways folder in the Matte_Group_Proj folder.
 2. Pretty print is fully implemented no matter the spacing standard used in the file.
- ---
+3. To test this feature, load spaced_drugs.pml into the app, and open the file's backup from the new_pathways folder and inspect.
+
+
+---
 
 ### Credit
 DINTO - https://github.com/labda/DINTO

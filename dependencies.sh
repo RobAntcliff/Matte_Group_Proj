@@ -14,6 +14,7 @@ sudo apt-get install libreadline-gplv2-dev
 sudo apt-get build-dep build-essential
 sudo apt-get install gcc
 sudo apt-get install g++
+sudo apt-get install python3-lxml
 
 sudo apt-get -y install libncurses5-dev
 sudo apt-get -y install python-pip
